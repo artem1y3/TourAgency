@@ -85,61 +85,71 @@ public class Cli {
             }
             switch (action) {
                 case "save":
-                    switch (modelType) {
-                        case SIMPLE_USER:
-                            long id = provider.save(getClient(false));
-                            LOG.info("Client was saved, id: " + id);
-                            break;
-                        case PRO_USER:
-                            id = provider.save(getProClient(false));
-                            LOG.info("ProClient was saved, id: " + id);
-                            break;
-                        case ORDER:
-                            Order order = getOrder(false);
-                            id = provider.save(order);
-                            LOG.info("Order was saved, id: " + id);
-                            break;
-                        case TOUR:
-                            Tour tour = getTour(false);
-                            id = provider.save(tour);
-                            LOG.info("Tour was saved, id: " + id);
-                            break;
-                        case HOTEL:
-                            Hotel hotel = getHotel(false);
-                            id = provider.save(hotel);
-                            LOG.info("Hotel was saved, id: " + id);
-                            break;
+                    try {
+                        switch (modelType) {
+                            case SIMPLE_USER:
+                                long id = provider.save(getClient(false));
+                                LOG.info("Client was saved, id: " + id);
+                                break;
+                            case PRO_USER:
+                                id = provider.save(getProClient(false));
+                                LOG.info("ProClient was saved, id: " + id);
+                                break;
+                            case ORDER:
+                                Order order = getOrder(false);
+                                id = provider.save(order);
+                                LOG.info("Order was saved, id: " + id);
+                                break;
+                            case TOUR:
+                                Tour tour = getTour(false);
+                                id = provider.save(tour);
+                                LOG.info("Tour was saved, id: " + id);
+                                break;
+                            case HOTEL:
+                                Hotel hotel = getHotel(false);
+                                id = provider.save(hotel);
+                                LOG.info("Hotel was saved, id: " + id);
+                                break;
+                        }
+                        break;
+                    }catch (Exception ex){
+                        LOG.error(ex);
+                        continue;
                     }
-                    break;
                 case "update":
-                    switch (modelType) {
-                        case SIMPLE_USER:
-                            Client client = getClient(true);
-                            provider.update(client);
-                            LOG.info("Client was updated, id: " + client.getId());
-                            break;
-                        case PRO_USER:
-                            ProClient proClient = getProClient(true);
-                            provider.update(proClient);
-                            LOG.info("ProClient was updated, id: " + proClient.getId());
-                            break;
-                        case ORDER:
-                            Order order = getOrder(true);
-                            provider.update(order);
-                            LOG.info("Order was updated, id: " + order.getId());
-                            break;
-                        case TOUR:
-                            Tour tour = getTour(true);
-                            provider.update(tour);
-                            LOG.info("Tour was updated, id: " + tour.getId());
-                            break;
-                        case HOTEL:
-                            Hotel hotel = getHotel(true);
-                            provider.update(hotel);
-                            LOG.info("Hotel was updated, id: " + hotel.getId());
-                            break;
+                    try {
+                        switch (modelType) {
+                            case SIMPLE_USER:
+                                Client client = getClient(true);
+                                provider.update(client);
+                                LOG.info("Client was updated, id: " + client.getId());
+                                break;
+                            case PRO_USER:
+                                ProClient proClient = getProClient(true);
+                                provider.update(proClient);
+                                LOG.info("ProClient was updated, id: " + proClient.getId());
+                                break;
+                            case ORDER:
+                                Order order = getOrder(true);
+                                provider.update(order);
+                                LOG.info("Order was updated, id: " + order.getId());
+                                break;
+                            case TOUR:
+                                Tour tour = getTour(true);
+                                provider.update(tour);
+                                LOG.info("Tour was updated, id: " + tour.getId());
+                                break;
+                            case HOTEL:
+                                Hotel hotel = getHotel(true);
+                                provider.update(hotel);
+                                LOG.info("Hotel was updated, id: " + hotel.getId());
+                                break;
+                        }
+                        break;
+                    } catch (Exception ex){
+                        LOG.error(ex);
+                        continue;
                     }
-                    break;
                 case "print_all":
                     List<Object> all = provider.getAll();
                     if (all == null){
