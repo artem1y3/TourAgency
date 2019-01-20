@@ -128,7 +128,7 @@ public class DataProviderXml implements DataProvider {
         clear();
         for (Object model : all){
             if(id != getId(model)){
-                save(model);
+                save(model, getId(model));
             }
         }
     }

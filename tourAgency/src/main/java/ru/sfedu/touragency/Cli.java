@@ -1,4 +1,4 @@
-package ru.sfedu.touragency.utils;
+package ru.sfedu.touragency;
 
 import org.apache.log4j.Logger;
 import ru.sfedu.touragency.api.DataProvider;
@@ -96,15 +96,18 @@ public class Cli {
                             break;
                         case ORDER:
                             Order order = getOrder(false);
-                            provider.update(order);
+                            id = provider.save(order);
+                            LOG.info("Order was saved, id: " + id);
                             break;
                         case TOUR:
                             Tour tour = getTour(false);
-                            provider.update(tour);
+                            id = provider.save(tour);
+                            LOG.info("Tour was saved, id: " + id);
                             break;
                         case HOTEL:
                             Hotel hotel = getHotel(false);
-                            provider.update(hotel);
+                            id = provider.save(hotel);
+                            LOG.info("Hotel was saved, id: " + id);
                             break;
                     }
                     break;
@@ -118,18 +121,22 @@ public class Cli {
                         case PRO_USER:
                             ProClient proClient = getProClient(true);
                             provider.update(proClient);
+                            LOG.info("ProClient was updated, id: " + proClient.getId());
                             break;
                         case ORDER:
                             Order order = getOrder(true);
                             provider.update(order);
+                            LOG.info("Order was updated, id: " + order.getId());
                             break;
                         case TOUR:
                             Tour tour = getTour(true);
                             provider.update(tour);
+                            LOG.info("Tour was updated, id: " + tour.getId());
                             break;
                         case HOTEL:
                             Hotel hotel = getHotel(true);
                             provider.update(hotel);
+                            LOG.info("Hotel was updated, id: " + hotel.getId());
                             break;
                     }
                     break;
@@ -237,7 +244,6 @@ public class Cli {
                 arr[i] = arr[i].trim();
             }
 
-
             if(!update){
                 String[] orderStringArray = new String[arr.length + 1];
                 orderStringArray[0] = "0";
@@ -245,9 +251,8 @@ public class Cli {
                 arr = orderStringArray;
             }
 
-            arr[3]= arr[3].toUpperCase();
             try{
-                Country.valueOf(arr[3]);
+                OrderStatus.valueOf(arr[3].toUpperCase());
             }
             catch (Exception ex){
                 LOG.info("Wrong status param");

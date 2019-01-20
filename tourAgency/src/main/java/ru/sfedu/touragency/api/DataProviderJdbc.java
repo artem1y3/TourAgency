@@ -3,12 +3,12 @@ package ru.sfedu.touragency.api;
 import org.apache.log4j.Logger;
 import ru.sfedu.touragency.Constants;
 import ru.sfedu.touragency.model.*;
-import ru.sfedu.touragency.utils.Cli;
 import ru.sfedu.touragency.utils.ConfigurationUtil;
 
 import java.io.Closeable;
 import java.io.IOException;
 import java.sql.*;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -75,7 +75,7 @@ public class DataProviderJdbc implements DataProvider, Closeable {
                     st.execute("CREATE TABLE IF NOT EXISTS Tours(" +
                             "id SERIAL," +
                             "tourName VARCHAR(64)," +
-                            "descriprion VARCHAR(64)," +
+                            "description VARCHAR(64)," +
                             "dayCount INT," +
                             "country VARCHAR(64)," +
                             "city VARCHAR(64)," +
@@ -112,7 +112,13 @@ public class DataProviderJdbc implements DataProvider, Closeable {
         String query = String.format(queryTemplate, tableName, paramsFromStringArray(arr));
         System.out.println(query);
         try(Statement st = connection.createStatement()) {
-            return st.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
+             st.execute(query, Statement.RETURN_GENERATED_KEYS);
+            ResultSet rs = st.getGeneratedKeys();
+            if ( rs.next() ) {
+            // Retrieve the auto generated key(s).
+                return rs.getInt(1);
+            }
+            return -1;
         } catch (SQLException e) {
             LOG.error(e);
             return -1;
@@ -125,13 +131,13 @@ public class DataProviderJdbc implements DataProvider, Closeable {
             switch (type) {
                 case SIMPLE_USER:
                     Client client = (Client)model;
-                    st.executeUpdate(String.format("UPDATE Clients SET email='%s', password='%s', firstName=%s, lastName=%s WHERE id=%d",
+                    st.executeUpdate(String.format("UPDATE Clients SET email='%s', password='%s', firstName='%s', lastName='%s' WHERE id=%d",
                             client.getEmail(),
                             client.getPassword(),
                             client.getFirstName(),
                             client.getLastName(),
                             client.getId()));
-
+                    break;
                 case PRO_USER:
                     ProClient proClient = (ProClient) model;
                     st.executeUpdate(String.format("UPDATE ProClients SET email='%s', password='%s', firstName='%s', lastName='%s', discount=%d, points=%d WHERE id=%d",
@@ -142,13 +148,15 @@ public class DataProviderJdbc implements DataProvider, Closeable {
                             proClient.getDiscount(),
                             proClient.getPoints(),
                             proClient.getId()));
+                    break;
                 case ORDER:
                     Order order = (Order) model;
+                    SimpleDateFormat formater = new SimpleDateFormat("dd.MM.yyyy");
                     st.executeUpdate(String.format("UPDATE Orders SET clientId=%d, tourId=%d, status='%s', orderDate='%s' WHERE id=%d",
                             order.getClientId(),
                             order.getTourId(),
                             order.getStatus(),
-                            order.getDueDate(),
+                            (String) formater.format(order.getDueDate()),
                             order.getId()));
                     break;
                 case TOUR:
@@ -160,7 +168,9 @@ public class DataProviderJdbc implements DataProvider, Closeable {
                             tour.getCountry(),
                             tour.getCity(),
                             tour.getPrice(),
+                            tour.getHotelId(),
                             tour.getId()));
+                    break;
 
                 case HOTEL:
                     Hotel hotel = (Hotel)model;
@@ -169,6 +179,7 @@ public class DataProviderJdbc implements DataProvider, Closeable {
                             hotel.getDescription(),
                             hotel.getRate(),
                             hotel.getId()));
+                    break;
             }
         } catch (SQLException e) {
             LOG.error(e);
@@ -215,10 +226,11 @@ public class DataProviderJdbc implements DataProvider, Closeable {
                         order.setClientId(rs.getLong(2));
                         order.setTourId(rs.getLong(3));
                         order.setStatus(OrderStatus.valueOf(rs.getString(4)));
-                        order.setDueDate(Date.valueOf(LocalDate.parse(rs.getString(5),DateTimeFormatter.ofPattern("dd.MM.yyyy"))));
+                        order.setDueDate(Date.valueOf(LocalDate.parse( rs.getString(5),DateTimeFormatter.ofPattern("dd.MM.yyyy"))));
 
                         models.add(order);
                     }
+                    break;
                 case TOUR:
                     rs = st.executeQuery("SELECT * FROM Tours");
                     while(rs.next()){
@@ -257,7 +269,7 @@ public class DataProviderJdbc implements DataProvider, Closeable {
             ResultSet rs;
             switch (type) {
                 case SIMPLE_USER:
-                    rs = st.executeQuery(String.format("SELECT * FROM Clientss WHERE id='%s'", id));
+                    rs = st.executeQuery(String.format("SELECT * FROM Clients WHERE id='%s'", id));
                     while(rs.next()){
                         Client client = new Client();
                         client.setId(rs.getLong(1));
@@ -293,6 +305,7 @@ public class DataProviderJdbc implements DataProvider, Closeable {
                         order.setDueDate(Date.valueOf(LocalDate.parse(rs.getString(5),DateTimeFormatter.ofPattern("dd.MM.yyyy"))));
                         return order;
                     }
+                    break;
                 case TOUR:
                     rs = st.executeQuery(String.format("SELECT * FROM Tours WHERE id='%s'", id));
                     if(rs.next()){

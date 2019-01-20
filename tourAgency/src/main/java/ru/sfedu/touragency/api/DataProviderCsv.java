@@ -54,19 +54,19 @@ public class DataProviderCsv implements DataProvider {
                 Client client = (Client) model;
                 row = new String[5];
                 row[0] = String.valueOf(client.getId());
-                row[1] = client.getFirstName();
-                row[2] = client.getLastName();
-                row[3] = client.getEmail();
-                row[4] = client.getPassword();
+                row[1] = client.getEmail();
+                row[2] = client.getPassword();
+                row[3] = client.getFirstName();
+                row[4] = client.getLastName();
                 break;
             case PRO_USER:
                 ProClient proClient = (ProClient) model;
                 row = new String[7];
                 row[0] = String.valueOf(proClient.getId());
-                row[1] = proClient.getFirstName();
-                row[2] = proClient.getLastName();
-                row[3] = proClient.getEmail();
-                row[4] = proClient.getPassword();
+                row[1] = proClient.getEmail();
+                row[2] = proClient.getPassword();
+                row[3] = proClient.getFirstName();
+                row[4] = proClient.getLastName();
                 row[5] = String.valueOf(proClient.getDiscount());
                 row[6] = String.valueOf(proClient.getPoints());
                 break;
@@ -77,8 +77,8 @@ public class DataProviderCsv implements DataProvider {
                 row[0] = String.valueOf(order.getId());
                 row[1] = String.valueOf(order.getClientId());
                 row[2] = String.valueOf(order.getTourId());
-                row[3] = String.valueOf(formater.format(order.getDueDate()));
-                row[4] = String.valueOf(order.getStatus());
+                row[3] = String.valueOf(order.getStatus());
+                row[4] = String.valueOf(formater.format(order.getDueDate()));
                 break;
             case HOTEL:
                 Hotel hotel = (Hotel)model;
@@ -108,18 +108,19 @@ public class DataProviderCsv implements DataProvider {
             case SIMPLE_USER:
                 Client client = new Client();
                 client.setId(Long.parseLong(row[0]));
-                client.setFirstName(row[1]);
-                client.setLastName(row[2]);
-                client.setEmail(row[3]);
-                client.setPassword(row[4]);
+                client.setEmail(row[1]);
+                client.setPassword(row[2]);
+                client.setFirstName(row[3]);
+                client.setLastName(row[4]);
+
                 return client;
             case PRO_USER:
                 ProClient proClient = new ProClient();
                 proClient.setId(Long.parseLong(row[0]));
-                proClient.setFirstName(row[1]);
-                proClient.setLastName(row[2]);
-                proClient.setEmail(row[3]);
-                proClient.setPassword(row[4]);
+                proClient.setEmail(row[1]);
+                proClient.setPassword(row[2]);
+                proClient.setFirstName(row[3]);
+                proClient.setLastName(row[4]);
                 proClient.setDiscount(Integer.parseInt(row[5]));
                 proClient.setPoints(Integer.parseInt(row[6]));
                 return proClient;
@@ -130,7 +131,8 @@ public class DataProviderCsv implements DataProvider {
                 order.setTourId(Long.parseLong(row[2]));
                 order.setStatus(OrderStatus.valueOf(row[3]));
                 order.setDueDate(Date.valueOf(LocalDate.parse(row[4], DateTimeFormatter.ofPattern("dd.MM.yyyy"))));
-                break;
+
+                return order;
             case HOTEL:
                 Hotel hotel = new Hotel();
                 hotel.setId(Long.parseLong(row[0]));
@@ -165,7 +167,7 @@ public class DataProviderCsv implements DataProvider {
         return save(model, id);
     }
 
-    public long save(Object model, long id) {
+     private long save(Object model, long id) {
         try(FileOutputStream fos = new FileOutputStream(dataSourcePath, true);
             Writer writer = new OutputStreamWriter(fos);
             CSVWriter csvWriter = new CSVWriter(writer))
@@ -256,7 +258,7 @@ public class DataProviderCsv implements DataProvider {
         clear();
         for (Object model : all){
             if(id != getId(model)){
-                save(model);
+                save(model, getId(model));
             }
         }
     }
