@@ -1,0 +1,13 @@
+<xmlList>
+   <list class="java.util.ArrayList">
+      <object class="ru.sfedu.touragency.model.ProClient">
+         <id>1</id>
+         <email>d</email>
+         <password>d</password>
+         <firstName>d</firstName>
+         <lastName>d</lastName>
+         <discount>1</discount>
+         <points>1</points>
+      </object>
+   </list>
+</xmlList>

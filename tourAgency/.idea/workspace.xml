@@ -2,8 +2,19 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e6a8e403-724c-42f0-9e02-6fed1917ec0a" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tmp/xml/HOTEL.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tmp/xml/ORDER.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tmp/xml/PRO_USER.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tmp/xml/SIMPLE_USER.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tmp/xml/TOUR.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ru/sfedu/touragency/utils/Cli.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/sfedu/touragency/utils/Cli.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tmp/csv/SIMPLE_USER.csv" beforeDir="false" afterPath="$PROJECT_DIR$/tmp/csv/SIMPLE_USER.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/enviroment.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/enviroment.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/enviroment.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/enviroment.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ru/sfedu/touragency/utils/Cli.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ru/sfedu/touragency/utils/Cli.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tmp/csv/HOTEL.csv" beforeDir="false" afterPath="$PROJECT_DIR$/tmp/csv/HOTEL.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tmp/csv/TOUR.csv" beforeDir="false" afterPath="$PROJECT_DIR$/tmp/csv/TOUR.csv" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -23,7 +34,47 @@
     <option name="HIDDEN_KINDS">
       <set />
     </option>
-    <expand />
+    <expand>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="touragency@localhost" type="feb32156:DbDataSourceImpl" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="touragency@localhost" type="feb32156:DbDataSourceImpl" />
+        <item name="databases" type="d4e8921:DatabaseStructure$FamilyGroup" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="touragency@localhost" type="feb32156:DbDataSourceImpl" />
+        <item name="databases" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="touragency: database" type="6d9b600a:PostgresImplModel$Database" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="touragency@localhost" type="feb32156:DbDataSourceImpl" />
+        <item name="databases" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="touragency: database" type="6d9b600a:PostgresImplModel$Database" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="touragency@localhost" type="feb32156:DbDataSourceImpl" />
+        <item name="databases" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="touragency: database" type="6d9b600a:PostgresImplModel$Database" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="public: schema" type="a16502c0:PostgresImplModel$Schema" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="touragency@localhost" type="feb32156:DbDataSourceImpl" />
+        <item name="databases" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="touragency: database" type="6d9b600a:PostgresImplModel$Database" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="public: schema" type="a16502c0:PostgresImplModel$Schema" />
+        <item name="tables" type="d4e8921:DatabaseStructure$FamilyGroup" />
+      </path>
+    </expand>
     <select />
   </component>
   <component name="FUSProjectUsageTrigger">
@@ -117,31 +168,46 @@
       <usages-collector id="statistics.lifecycle.project">
         <counts>
           <entry key="project.open.time.22" value="1" />
-          <entry key="project.opened" value="1" />
+          <entry key="project.open.time.30" value="1" />
+          <entry key="project.opened" value="2" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="csv" value="4" />
-          <entry key="java" value="1" />
+          <entry key="SIMPLE_USER" value="1" />
+          <entry key="clients" value="3" />
+          <entry key="clients_id_seq" value="2" />
+          <entry key="csv" value="7" />
+          <entry key="hotels_id_seq" value="2" />
+          <entry key="java" value="10" />
+          <entry key="proclients" value="1" />
+          <entry key="sql" value="1" />
+          <entry key="xml" value="7" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="JAVA" value="1" />
+          <entry key="CSV" value="3" />
+          <entry key="Database Element" value="4" />
+          <entry key="JAVA" value="10" />
           <entry key="PLAIN_TEXT" value="4" />
+          <entry key="SQL" value="4" />
+          <entry key="Scratch" value="1" />
+          <entry key="XML" value="8" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="csv" value="2" />
-          <entry key="java" value="332" />
+          <entry key="csv" value="3" />
+          <entry key="java" value="333" />
+          <entry key="txt" value="10" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="332" />
-          <entry key="PLAIN_TEXT" value="2" />
+          <entry key="CSV" value="1" />
+          <entry key="JAVA" value="333" />
+          <entry key="PLAIN_TEXT" value="12" />
         </counts>
       </usages-collector>
     </session>
@@ -151,86 +217,11 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/ru/sfedu/touragency/utils/Cli.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="49">
-              <caret line="118" column="131" selection-start-line="118" selection-start-column="131" selection-end-line="118" selection-end-column="131" />
+            <state relative-caret-position="468">
+              <caret line="327" column="13" lean-forward="true" selection-start-line="327" selection-start-column="13" selection-end-line="327" selection-end-column="13" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/tmp/csv/ORDER.csv">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/test/java/DataProviderCsvTest.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="228">
-              <caret line="27" column="26" lean-forward="true" selection-start-line="27" selection-start-column="26" selection-end-line="27" selection-end-column="26" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/ru/sfedu/touragency/api/DataProviderCsv.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="256">
-              <caret line="106" selection-start-line="106" selection-end-line="106" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/tmp/csv/SIMPLE_USER.csv">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="34">
-              <caret line="2" lean-forward="true" selection-start-line="2" selection-end-line="2" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/tmp/csv/PRO_USER.csv">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/tmp/csv/HOTEL.csv">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="51">
-              <caret line="3" lean-forward="true" selection-start-line="3" selection-end-line="3" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/ru/sfedu/touragency/model/Hotel.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="256">
-              <caret line="41" selection-start-line="41" selection-end-line="41" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/tmp/csv/TOUR.csv">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/resources/enviroment.properties">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="85">
-              <caret line="5" column="18" selection-start-line="5" selection-start-column="18" selection-end-line="5" selection-end-column="18" />
             </state>
           </provider>
         </entry>
@@ -258,15 +249,17 @@
       <list>
         <option value="$PROJECT_DIR$/src/main/java/ru/sfedu/touragency/utils/ConfigurationUtil.java" />
         <option value="$PROJECT_DIR$/src/test/java/DataProviderJdbcTest.java" />
-        <option value="$PROJECT_DIR$/src/test/java/DataProviderCsvTest.java" />
         <option value="$PROJECT_DIR$/src/main/java/ru/sfedu/touragency/model/ProClient.java" />
         <option value="$PROJECT_DIR$/src/main/java/ru/sfedu/touragency/api/IDataProvider.java" />
         <option value="$PROJECT_DIR$/src/main/java/ru/sfedu/touragency/api/DataProviderCsv.java" />
         <option value="$PROJECT_DIR$/src/main/java/ru/sfedu/touragency/api/DataProviderJdbc.java" />
         <option value="$PROJECT_DIR$/src/main/java/ru/sfedu/touragency/api/DataProviderXml.java" />
-        <option value="$PROJECT_DIR$/src/main/resources/enviroment.properties" />
         <option value="$PROJECT_DIR$/tmp/csv/SIMPLE_USER.csv" />
+        <option value="$PROJECT_DIR$/src/main/resources/enviroment.properties" />
+        <option value="$PROJECT_DIR$/src/test/java/DataProviderCsvTest.java" />
+        <option value="$PROJECT_DIR$/tmp/csv/HOTEL.csv" />
         <option value="$PROJECT_DIR$/src/main/java/ru/sfedu/touragency/utils/Cli.java" />
+        <option value="$PROJECT_DIR$/tmp/xml/SIMPLE_USER.xml" />
       </list>
     </option>
   </component>
@@ -304,6 +297,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -336,6 +330,15 @@
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="touragency" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="tour-agency" type="b2602c69:ProjectViewProjectNode" />
+              <item name="tourAgency" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="touragency" type="462c0819:PsiDirectoryNode" />
+              <item name="api" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="tour-agency" type="b2602c69:ProjectViewProjectNode" />
@@ -386,19 +389,26 @@
               <item name="tmp" type="462c0819:PsiDirectoryNode" />
               <item name="csv" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="tour-agency" type="b2602c69:ProjectViewProjectNode" />
+              <item name="tourAgency" type="462c0819:PsiDirectoryNode" />
+              <item name="tmp" type="462c0819:PsiDirectoryNode" />
+              <item name="xml" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
       </pane>
       <pane id="PackagesPane" />
       <pane id="AndroidView" />
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
+    <property name="DatabaseDriversLRU" value="postgresql" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1548012233958" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1548023845444" />
+    <property name="database.console.LAST_STATE" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -419,7 +429,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.Cli">
+  <component name="RunManager" selected="JUnit.DataProviderXmlTest">
     <configuration name="Cli" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="ru.sfedu.touragency.utils.Cli" />
       <module name="tour-agency" />
@@ -451,40 +461,36 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="DataProviderCsvTest.save" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="DataProviderJdbcTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="tour-agency" />
       <option name="PACKAGE_NAME" value="" />
-      <option name="MAIN_CLASS_NAME" value="DataProviderCsvTest" />
-      <option name="METHOD_NAME" value="save" />
-      <option name="TEST_OBJECT" value="method" />
+      <option name="MAIN_CLASS_NAME" value="DataProviderJdbcTest" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="DataProviderJdbcTest.connectionTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="DataProviderXmlTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="tour-agency" />
       <option name="PACKAGE_NAME" value="" />
-      <option name="MAIN_CLASS_NAME" value="DataProviderJdbcTest" />
-      <option name="METHOD_NAME" value="connectionTest" />
-      <option name="TEST_OBJECT" value="method" />
+      <option name="MAIN_CLASS_NAME" value="DataProviderXmlTest" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <list>
-      <item itemvalue="JUnit.DataProviderCsvTest.save" />
-      <item itemvalue="JUnit.DataProviderJdbcTest.connectionTest" />
       <item itemvalue="Application.Cli" />
       <item itemvalue="JUnit.DataProviderCsvTest.a_save" />
       <item itemvalue="JUnit.DataProviderCsvTest" />
+      <item itemvalue="JUnit.DataProviderJdbcTest" />
+      <item itemvalue="JUnit.DataProviderXmlTest" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Application.Cli" />
+        <item itemvalue="JUnit.DataProviderXmlTest" />
+        <item itemvalue="JUnit.DataProviderJdbcTest" />
         <item itemvalue="JUnit.DataProviderCsvTest" />
         <item itemvalue="JUnit.DataProviderCsvTest.a_save" />
-        <item itemvalue="JUnit.DataProviderJdbcTest.connectionTest" />
-        <item itemvalue="JUnit.DataProviderCsvTest.save" />
       </list>
     </recent_temporary>
   </component>
@@ -505,7 +511,8 @@
       <workItem from="1547985423474" duration="10877000" />
       <workItem from="1548000897693" duration="5417000" />
       <workItem from="1548008369485" duration="53000" />
-      <workItem from="1548009646150" duration="2583000" />
+      <workItem from="1548009646150" duration="4174000" />
+      <workItem from="1548020804367" duration="2844000" />
     </task>
     <task id="LOCAL-00001" summary="Доработка Давида">
       <created>1548004103682</created>
@@ -518,21 +525,6 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="DataProviderCsvTest_a_save - 2019.01.20 at 17h 04m 28s.xml">
-      <configuration name="DataProviderCsvTest.a_save" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="DataProviderCsvTest_a_save - 2019.01.20 at 17h 07m 38s.xml">
-      <configuration name="DataProviderCsvTest.a_save" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="DataProviderCsvTest_a_save - 2019.01.20 at 17h 08m 08s.xml">
-      <configuration name="DataProviderCsvTest.a_save" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="DataProviderCsvTest_a_save - 2019.01.20 at 17h 08m 47s.xml">
-      <configuration name="DataProviderCsvTest.a_save" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="DataProviderCsvTest_a_save - 2019.01.20 at 17h 09m 08s.xml">
-      <configuration name="DataProviderCsvTest.a_save" configurationId="JUnit" />
-    </history-entry>
     <history-entry file="DataProviderCsvTest_a_save - 2019.01.20 at 17h 09m 27s.xml">
       <configuration name="DataProviderCsvTest.a_save" configurationId="JUnit" />
     </history-entry>
@@ -548,9 +540,24 @@
     <history-entry file="DataProviderCsvTest - 2019.01.20 at 21h 46m 57s.xml">
       <configuration name="DataProviderCsvTest" configurationId="JUnit" />
     </history-entry>
+    <history-entry file="DataProviderCsvTest - 2019.01.21 at 01h 07m 30s.xml">
+      <configuration name="DataProviderCsvTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="DataProviderCsvTest - 2019.01.21 at 01h 08m 10s.xml">
+      <configuration name="DataProviderCsvTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="DataProviderJdbcTest - 2019.01.21 at 01h 08m 36s.xml">
+      <configuration name="DataProviderJdbcTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="DataProviderXmlTest - 2019.01.21 at 01h 09m 03s.xml">
+      <configuration name="DataProviderXmlTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="DataProviderXmlTest - 2019.01.21 at 01h 13m 02s.xml">
+      <configuration name="DataProviderXmlTest" configurationId="JUnit" />
+    </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="34359000" />
+    <option name="totallyTimeSpent" value="38794000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -563,9 +570,8 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.34795764" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.19213313" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -575,16 +581,17 @@
       <window_info id="Favorites" order="7" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3295082" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.44590163" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.40983605" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.3295082" />
       <window_info anchor="bottom" id="Version Control" order="7" weight="0.3295082" />
-      <window_info anchor="bottom" id="Database Changes" order="8" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Database Changes" order="8" />
       <window_info anchor="bottom" id="Terminal" order="9" weight="0.3295082" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" weight="0.3285968" />
       <window_info anchor="bottom" id="Messages" order="11" />
+      <window_info anchor="bottom" id="Database Console" order="12" weight="0.3295082" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.24962178" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -593,7 +600,7 @@
       <window_info anchor="right" id="Theme Preview" order="5" />
       <window_info anchor="right" id="Palette&#9;" order="6" />
       <window_info anchor="right" id="Maven Projects" order="7" weight="0.32980332" />
-      <window_info anchor="right" id="Database" order="8" weight="0.32980332" />
+      <window_info anchor="right" id="Database" order="8" visible="true" weight="0.25642964" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -695,13 +702,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/DataProviderXmlTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="15" column="26" lean-forward="true" selection-start-line="15" selection-start-column="26" selection-end-line="15" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/ru/sfedu/touragency/api/XmlList.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
@@ -713,9 +713,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="153">
           <caret line="33" column="43" selection-start-line="33" selection-start-column="43" selection-end-line="33" selection-end-column="43" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -730,9 +727,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-408">
           <caret line="6" column="20" lean-forward="true" selection-start-line="6" selection-start-column="20" selection-end-line="6" selection-end-column="20" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -783,19 +777,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="119">
           <caret line="7" column="9" selection-start-line="7" selection-start-column="9" selection-end-line="7" selection-end-column="9" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/DataProviderJdbcTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="211">
-          <caret line="15" column="15" selection-start-line="15" selection-start-column="15" selection-end-line="15" selection-end-column="15" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -823,32 +804,8 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/enviroment.properties">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="5" column="18" selection-start-line="5" selection-start-column="18" selection-end-line="5" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/DataProviderCsvTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="228">
-          <caret line="27" column="26" lean-forward="true" selection-start-line="27" selection-start-column="26" selection-end-line="27" selection-end-column="26" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/tmp/csv/TOUR.csv">
       <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tmp/csv/HOTEL.csv">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="3" lean-forward="true" selection-start-line="3" selection-end-line="3" />
-        </state>
-      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/ru/sfedu/touragency/model/Hotel.java">
       <provider selected="true" editor-type-id="text-editor">
@@ -874,16 +831,105 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="256">
           <caret line="106" selection-start-line="106" selection-end-line="106" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tmp/xml/SIMPLE_USER" />
+    <entry file="file://$PROJECT_DIR$/src/main/resources/enviroment.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="6" column="27" selection-start-line="6" selection-start-column="27" selection-end-line="6" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/b7c48a45-ab11-4043-9cc4-0e933993d882/console.sql">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="das://b7c48a45-ab11-4043-9cc4-0e933993d882/database/touragency/schema/public/table/clients">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+          <column-attributes>
+            <column name="ctid" enabled="false" />
+          </column-attributes>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/DataProviderCsvTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="40">
+          <caret line="17" column="34" lean-forward="true" selection-start-line="17" selection-start-column="34" selection-end-line="17" selection-end-column="34" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/DataProviderXmlTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="11" column="16" selection-start-line="11" selection-start-column="16" selection-end-line="11" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tmp/csv/HOTEL.csv">
+      <provider editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="3" lean-forward="true" selection-start-line="3" selection-end-line="3" />
+        </state>
+      </provider>
+      <provider selected="true" editor-type-id="csv-text-editor" />
+      <provider editor-type-id="csv-table-editor">
+        <state showInfoPanel="true" fixedHeaders="false" rowLines="3">
+          <column index="0" width="100" />
+          <column index="1" width="100" />
+          <column index="2" width="100" />
+          <column index="3" width="100" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tmp/xml/HOTEL.xml">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tmp/xml/ORDER.xml">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tmp/xml/SIMPLE_USER.xml">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tmp/xml/TOUR.xml">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/DataProviderJdbcTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="8" column="15" selection-start-line="8" selection-start-column="15" selection-end-line="8" selection-end-column="15" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://b7c48a45-ab11-4043-9cc4-0e933993d882/database/touragency/schema/public/sequence/clients_id_seq">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="das://b7c48a45-ab11-4043-9cc4-0e933993d882/database/touragency/schema/public/sequence/hotels_id_seq">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="das://b7c48a45-ab11-4043-9cc4-0e933993d882/database/touragency/schema/public/table/proclients">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+          <column-attributes>
+            <column name="ctid" enabled="false" />
+          </column-attributes>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/ru/sfedu/touragency/utils/Cli.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="49">
-          <caret line="118" column="131" selection-start-line="118" selection-start-column="131" selection-end-line="118" selection-end-column="131" />
+        <state relative-caret-position="468">
+          <caret line="327" column="13" lean-forward="true" selection-start-line="327" selection-start-column="13" selection-end-line="327" selection-end-column="13" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

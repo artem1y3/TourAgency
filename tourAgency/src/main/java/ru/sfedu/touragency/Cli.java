@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Cli {
-    private static final Logger LOG = Logger.getLogger(DataProviderCsv.class);
+    private static final Logger LOG = Logger.getLogger(DataProvider.class);
     private static Scanner sc = new Scanner(System.in);
 
     private static String getDataSourceType(){
