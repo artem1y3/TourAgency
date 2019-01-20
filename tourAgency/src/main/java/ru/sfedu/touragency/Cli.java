@@ -161,6 +161,7 @@ public class Cli {
                 case "select":
                     LOG.info("Input id:");
                     long id = sc.nextInt();
+                    sc.nextLine();
                     Object model = provider.getById(id);
                     if (model == null){
                         LOG.info("nothing was found");
@@ -171,6 +172,7 @@ public class Cli {
                 case "delete":
                     LOG.info("Input id:");
                     long deleteId = sc.nextInt();
+                    sc.nextLine();
                     provider.delete(deleteId);
                     LOG.info("Model deleted: " + deleteId);
                     break;
