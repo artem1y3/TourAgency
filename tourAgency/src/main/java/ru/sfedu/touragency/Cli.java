@@ -242,10 +242,10 @@ public class Cli {
             int paramsCount;
             if (update) {
                 LOG.info("Input comma-separated id, clientId, tourId, status (SENT or PAID), date (DD.MM.YYYY)");
-                paramsCount = 5;
+                paramsCount = 6;
             } else {
                 LOG.info("Input comma-separated clientId, tourId, status (SENT or PAID), date (DD.MM.YYYY)");
-                paramsCount = 4;
+                paramsCount = 5;
             }
             String[] arr = sc.nextLine().split(",");
             if(arr.length != paramsCount){

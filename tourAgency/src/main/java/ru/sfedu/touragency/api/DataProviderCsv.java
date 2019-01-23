@@ -336,7 +336,7 @@ public class DataProviderCsv implements DataProvider {
                         }
                     case SIMPLE_USER:
                         String email = models.get(i)[1];
-                        if(!email.matches("\\w+@\\w+")){
+                        if(!email.matches("\\w+@\\w+(\\.\\w+)?")){
                             LOG.info("[csv_" + type.toString() + ":" + i + "]: wrong email format");
                         }
                         break;
@@ -381,10 +381,10 @@ public class DataProviderCsv implements DataProvider {
                             LOG.info("[csv_" + type.toString() + ":" + i + "]: dayCount should be number");
                         }
                         if (!isCounty(models.get(i)[4])){
-                            LOG.info("[csv_" + type.toString() + ":" + i + "]: dayCount should be number");
+                            LOG.info("[csv_" + type.toString() + ":" + i + "]: wrong country value");
                         }
                         if (!isInt(models.get(i)[6])){
-                            LOG.info("[csv_" + type.toString() + ":" + i + "]: dayCount should be number");
+                            LOG.info("[csv_" + type.toString() + ":" + i + "]: price should be number");
                         }
                         if (!isLong(models.get(i)[7])){
                             LOG.info("[csv_" + type.toString() + ":" + i + "]: clientId should be number");
