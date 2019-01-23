@@ -19,11 +19,11 @@ public class DataProviderJdbcTest {
     private static DataProviderJdbc tourDataProviderJdbc = new DataProviderJdbc(ModelType.TOUR);
     private static DataProviderJdbc hotelDataProviderJdbc = new DataProviderJdbc(ModelType.HOTEL);
 
-    private List<Client> clients = makeClients();
-    private List<ProClient> proClients = makeProClients();
-    private List<Order> orders = makeOrders();
-    private List<Tour> tours = makeTours();
-    private List<Hotel> hotels = makeHotels();
+    private static List<Client> clients = makeClients();
+    private static List<ProClient> proClients = makeProClients();
+    private static List<Order> orders = makeOrders();
+    private static List<Tour> tours = makeTours();
+    private static List<Hotel> hotels = makeHotels();
 
     private static List<Client> makeClients() {
         List<Client> clients = new ArrayList<>();
@@ -222,14 +222,24 @@ public class DataProviderJdbcTest {
             hotelsCheck.add((Hotel) obj);
         }
 
-        assertEquals(clients, clientsCheck);
-        assertEquals(proClients, proClientsCheck);
-        assertEquals(orders, ordersCheck);
-        assertEquals(tours, toursCheck);
-        assertEquals(hotels, hotelsCheck);
-
-
+        for (Client client : clients) {
+            assert clientsCheck.contains(client);
+        }
+        for (ProClient proClient : proClients) {
+            assert proClientsCheck.contains(proClient);
+        }
+        for (Order order : orders) {
+            assert ordersCheck.contains(order);
+        }
+        for (Tour tour : tours) {
+            assert toursCheck.contains(tour);
+        }
+        for (Hotel hotel : hotels) {
+            assert hotelsCheck.contains(hotel);
+        }
     }
+
+
     @Test
     public void b_getByIdAndUpdate() {
         long testId = clients.get(1).getId();

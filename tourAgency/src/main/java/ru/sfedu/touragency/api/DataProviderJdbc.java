@@ -110,7 +110,6 @@ public class DataProviderJdbc implements DataProvider, Closeable {
         String queryTemplate = "INSERT INTO %s VALUES( DEFAULT,%s)";
         String[] arr = DataProviderCsv.modelToStringArray(model, type);
         String query = String.format(queryTemplate, tableName, paramsFromStringArray(arr));
-        System.out.println(query);
         try(Statement st = connection.createStatement()) {
              st.execute(query, Statement.RETURN_GENERATED_KEYS);
             ResultSet rs = st.getGeneratedKeys();
