@@ -1,7 +1,6 @@
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
-
 import ru.sfedu.touragency.api.DataProviderXml;
 import ru.sfedu.touragency.model.*;
 
@@ -20,11 +19,11 @@ public class DataProviderXmlTest {
     private static DataProviderXml tourDataProviderXml = new DataProviderXml(ModelType.TOUR);
     private static DataProviderXml hotelDataProviderXml = new DataProviderXml(ModelType.HOTEL);
 
-    private List<Client> clients = makeClients();
-    private List<ProClient> proClients = makeProClients();
-    private List<Order> orders = makeOrders();
-    private List<Tour> tours = makeTours();
-    private List<Hotel> hotels = makeHotels();
+    private static List<Client> clients = makeClients();
+    private static List<ProClient> proClients = makeProClients();
+    private static List<Order> orders = makeOrders();
+    private static List<Tour> tours = makeTours();
+    private static List<Hotel> hotels = makeHotels();
 
     private static List<Client> makeClients() {
         List<Client> clients = new ArrayList<>();
@@ -97,6 +96,7 @@ public class DataProviderXmlTest {
         order1.setClientId(1);
         order1.setDueDate(new Date(116, 8, 2));
         order1.setStatus(OrderStatus.SENT);
+        order1.setPro(false);
 
         Order order2 = new Order();
         order2.setId(2);
@@ -104,6 +104,7 @@ public class DataProviderXmlTest {
         order2.setClientId(2);
         order2.setDueDate(new Date(117, 12, 12));
         order2.setStatus(OrderStatus.PAID);
+        order2.setPro(false);
 
         Order order3 = new Order();
         order3.setId(3);
@@ -111,12 +112,14 @@ public class DataProviderXmlTest {
         order3.setClientId(3);
         order3.setDueDate(new Date(118, 1, 22));
         order3.setStatus(OrderStatus.SENT);
+        order3.setPro(true);
 
         orders.add(order1);
         orders.add(order2);
         orders.add(order3);
         return orders;
     }
+
 
     private static List<Tour> makeTours() {
         List<Tour> tours = new ArrayList<>();
@@ -184,11 +187,21 @@ public class DataProviderXmlTest {
     @Test
     public void a_saveAndGetAll() {
         //Записываем все данные
-        clients.forEach(clientDataProviderXml::save);
-        proClients.forEach(proClientDataProviderXml::save);
-        orders.forEach(orderDataProviderXml::save);
-        tours.forEach(tourDataProviderXml::save);
-        hotels.forEach(hotelDataProviderXml::save);
+        for (Client client : clients) {
+            client.setId(clientDataProviderXml.save(client));
+        }
+        for (ProClient proClient : proClients) {
+            proClient.setId(proClientDataProviderXml.save(proClient));
+        }
+        for (Order order : orders) {
+            order.setId(orderDataProviderXml.save(order));
+        }
+        for (Tour tour : tours) {
+            tour.setId(tourDataProviderXml.save(tour));
+        }
+        for (Hotel hotel : hotels) {
+            hotel.setId(hotelDataProviderXml.save(hotel));
+        }
 
         //считываем все данные в другие списки
         List<Client> clientsCheck = new ArrayList<>();
@@ -213,22 +226,32 @@ public class DataProviderXmlTest {
             hotelsCheck.add((Hotel) obj);
         }
 
-        assertEquals(clients, clientsCheck);
-        assertEquals(proClients, proClientsCheck);
-        assertEquals(orders, ordersCheck);
-        assertEquals(tours, toursCheck);
-        assertEquals(hotels, hotelsCheck);
-
-
+        for (Client client : clients) {
+            assert clientsCheck.contains(client);
+        }
+        for (ProClient proClient : proClients) {
+            assert proClientsCheck.contains(proClient);
+        }
+        for (Order order : orders) {
+            assert ordersCheck.contains(order);
+        }
+        for (Tour tour : tours) {
+            assert toursCheck.contains(tour);
+        }
+        for (Hotel hotel : hotels) {
+            assert hotelsCheck.contains(hotel);
+        }
     }
+
 
     @Test
     public void b_getByIdAndUpdate() {
-        Client updClient = (Client) clientDataProviderXml.getById(2);
-        ProClient updProClient = (ProClient) proClientDataProviderXml.getById(2);
-        Order updOrder = (Order) orderDataProviderXml.getById(2);
-        Tour updTour = (Tour) tourDataProviderXml.getById(2);
-        Hotel updHotel = (Hotel) hotelDataProviderXml.getById(2);
+        long testId = clients.get(1).getId();
+        Client updClient = (Client) clientDataProviderXml.getById(testId);
+        ProClient updProClient = (ProClient) proClientDataProviderXml.getById(testId);
+        Order updOrder = (Order) orderDataProviderXml.getById(testId);
+        Tour updTour = (Tour) tourDataProviderXml.getById(testId);
+        Hotel updHotel = (Hotel) hotelDataProviderXml.getById(testId);
 
         updClient.setLastName("NewLAST");
         updProClient.setPoints(3000);
@@ -243,21 +266,30 @@ public class DataProviderXmlTest {
         hotelDataProviderXml.update(updHotel);
 
 
-        assertEquals(updClient, clientDataProviderXml.getById(2));
-        assertEquals(updProClient, proClientDataProviderXml.getById(2));
-        assertEquals(updOrder, orderDataProviderXml.getById(2));
-        assertEquals(updTour, tourDataProviderXml.getById(2));
-        assertEquals(updHotel, hotelDataProviderXml.getById(2));
+        assertEquals(updClient, clientDataProviderXml.getById(testId));
+        assertEquals(updProClient, proClientDataProviderXml.getById(testId));
+        assertEquals(updOrder, orderDataProviderXml.getById(testId));
+        assertEquals(updTour, tourDataProviderXml.getById(testId));
+        assertEquals(updHotel, hotelDataProviderXml.getById(testId));
     }
 
     @Test
-    public void c_delete() {
+    public void c_validate(){
+        clientDataProviderXml.validate();
+        proClientDataProviderXml.validate();
+        orderDataProviderXml.validate();
+        tourDataProviderXml.validate();
+        hotelDataProviderXml.validate();
+    }
 
-        clientDataProviderXml.delete(2);
-        proClientDataProviderXml.delete(2);
-        orderDataProviderXml.delete(2);
-        tourDataProviderXml.delete(2);
-        hotelDataProviderXml.delete(2);
+    @Test
+    public void d_delete() {
+        long testId = clients.get(1).getId();
+        clientDataProviderXml.delete(testId);
+        proClientDataProviderXml.delete(testId);
+        orderDataProviderXml.delete(testId);
+        tourDataProviderXml.delete(testId);
+        hotelDataProviderXml.delete(testId);
 
         //убираем удаленные строки и из изначальных листов
         clients.remove(1);
@@ -318,3 +350,4 @@ public class DataProviderXmlTest {
 
 
 }
+

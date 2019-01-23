@@ -1,7 +1,6 @@
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
-
 import ru.sfedu.touragency.api.DataProviderCsv;
 import ru.sfedu.touragency.model.*;
 
@@ -20,11 +19,11 @@ public class DataProviderCsvTest {
     private static DataProviderCsv tourDataProviderCsv = new DataProviderCsv(ModelType.TOUR);
     private static DataProviderCsv hotelDataProviderCsv = new DataProviderCsv(ModelType.HOTEL);
 
-    private List<Client> clients = makeClients();
-    private List<ProClient> proClients = makeProClients();
-    private List<Order> orders = makeOrders();
-    private List<Tour> tours = makeTours();
-    private List<Hotel> hotels = makeHotels();
+    private static List<Client> clients = makeClients();
+    private static List<ProClient> proClients = makeProClients();
+    private static List<Order> orders = makeOrders();
+    private static List<Tour> tours = makeTours();
+    private static List<Hotel> hotels = makeHotels();
 
     private static List<Client> makeClients() {
         List<Client> clients = new ArrayList<>();
@@ -97,6 +96,7 @@ public class DataProviderCsvTest {
         order1.setClientId(1);
         order1.setDueDate(new Date(116, 8, 2));
         order1.setStatus(OrderStatus.SENT);
+        order1.setPro(false);
 
         Order order2 = new Order();
         order2.setId(2);
@@ -104,6 +104,7 @@ public class DataProviderCsvTest {
         order2.setClientId(2);
         order2.setDueDate(new Date(117, 12, 12));
         order2.setStatus(OrderStatus.PAID);
+        order2.setPro(false);
 
         Order order3 = new Order();
         order3.setId(3);
@@ -111,6 +112,7 @@ public class DataProviderCsvTest {
         order3.setClientId(3);
         order3.setDueDate(new Date(118, 1, 22));
         order3.setStatus(OrderStatus.SENT);
+        order3.setPro(true);
 
         orders.add(order1);
         orders.add(order2);
@@ -184,11 +186,21 @@ public class DataProviderCsvTest {
     @Test
     public void a_saveAndGetAll() {
         //Записываем все данные
-        clients.forEach(clientDataProviderCsv::save);
-        proClients.forEach(proClientDataProviderCsv::save);
-        orders.forEach(orderDataProviderCsv::save);
-        tours.forEach(tourDataProviderCsv::save);
-        hotels.forEach(hotelDataProviderCsv::save);
+        for (Client client : clients) {
+            client.setId(clientDataProviderCsv.save(client));
+        }
+        for (ProClient proClient : proClients) {
+            proClient.setId(proClientDataProviderCsv.save(proClient));
+        }
+        for (Order order : orders) {
+            order.setId(orderDataProviderCsv.save(order));
+        }
+        for (Tour tour : tours) {
+            tour.setId(tourDataProviderCsv.save(tour));
+        }
+        for (Hotel hotel : hotels) {
+            hotel.setId(hotelDataProviderCsv.save(hotel));
+        }
 
         //считываем все данные в другие списки
         List<Client> clientsCheck = new ArrayList<>();
@@ -213,22 +225,32 @@ public class DataProviderCsvTest {
             hotelsCheck.add((Hotel) obj);
         }
 
-        assertEquals(clients, clientsCheck);
-        assertEquals(proClients, proClientsCheck);
-        assertEquals(orders, ordersCheck);
-        assertEquals(tours, toursCheck);
-        assertEquals(hotels, hotelsCheck);
-
-
+        for (Client client : clients) {
+            assert clientsCheck.contains(client);
+        }
+        for (ProClient proClient : proClients) {
+            assert proClientsCheck.contains(proClient);
+        }
+        for (Order order : orders) {
+            assert ordersCheck.contains(order);
+        }
+        for (Tour tour : tours) {
+            assert toursCheck.contains(tour);
+        }
+        for (Hotel hotel : hotels) {
+            assert hotelsCheck.contains(hotel);
+        }
     }
+
 
     @Test
     public void b_getByIdAndUpdate() {
-        Client updClient = (Client) clientDataProviderCsv.getById(2);
-        ProClient updProClient = (ProClient) proClientDataProviderCsv.getById(2);
-        Order updOrder = (Order) orderDataProviderCsv.getById(2);
-        Tour updTour = (Tour) tourDataProviderCsv.getById(2);
-        Hotel updHotel = (Hotel) hotelDataProviderCsv.getById(2);
+        long testId = clients.get(1).getId();
+        Client updClient = (Client) clientDataProviderCsv.getById(testId);
+        ProClient updProClient = (ProClient) proClientDataProviderCsv.getById(testId);
+        Order updOrder = (Order) orderDataProviderCsv.getById(testId);
+        Tour updTour = (Tour) tourDataProviderCsv.getById(testId);
+        Hotel updHotel = (Hotel) hotelDataProviderCsv.getById(testId);
 
         updClient.setLastName("NewLAST");
         updProClient.setPoints(3000);
@@ -243,21 +265,30 @@ public class DataProviderCsvTest {
         hotelDataProviderCsv.update(updHotel);
 
 
-        assertEquals(updClient, clientDataProviderCsv.getById(2));
-        assertEquals(updProClient, proClientDataProviderCsv.getById(2));
-        assertEquals(updOrder, orderDataProviderCsv.getById(2));
-        assertEquals(updTour, tourDataProviderCsv.getById(2));
-        assertEquals(updHotel, hotelDataProviderCsv.getById(2));
+        assertEquals(updClient, clientDataProviderCsv.getById(testId));
+        assertEquals(updProClient, proClientDataProviderCsv.getById(testId));
+        assertEquals(updOrder, orderDataProviderCsv.getById(testId));
+        assertEquals(updTour, tourDataProviderCsv.getById(testId));
+        assertEquals(updHotel, hotelDataProviderCsv.getById(testId));
     }
 
     @Test
-    public void c_delete() {
+    public void c_validate(){
+        clientDataProviderCsv.validate();
+        proClientDataProviderCsv.validate();
+        orderDataProviderCsv.validate();
+        tourDataProviderCsv.validate();
+        hotelDataProviderCsv.validate();
+    }
 
-        clientDataProviderCsv.delete(2);
-        proClientDataProviderCsv.delete(2);
-        orderDataProviderCsv.delete(2);
-        tourDataProviderCsv.delete(2);
-        hotelDataProviderCsv.delete(2);
+    @Test
+    public void d_delete() {
+        long testId = clients.get(1).getId();
+        clientDataProviderCsv.delete(testId);
+        proClientDataProviderCsv.delete(testId);
+        orderDataProviderCsv.delete(testId);
+        tourDataProviderCsv.delete(testId);
+        hotelDataProviderCsv.delete(testId);
 
         //убираем удаленные строки и из изначальных листов
         clients.remove(1);
@@ -318,3 +349,4 @@ public class DataProviderCsvTest {
 
 
 }
+

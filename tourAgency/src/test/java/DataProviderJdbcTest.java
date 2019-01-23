@@ -19,11 +19,11 @@ public class DataProviderJdbcTest {
     private static DataProviderJdbc tourDataProviderJdbc = new DataProviderJdbc(ModelType.TOUR);
     private static DataProviderJdbc hotelDataProviderJdbc = new DataProviderJdbc(ModelType.HOTEL);
 
-    private List<Client> clients = makeClients();
-    private List<ProClient> proClients = makeProClients();
-    private List<Order> orders = makeOrders();
-    private List<Tour> tours = makeTours();
-    private List<Hotel> hotels = makeHotels();
+    private static List<Client> clients = makeClients();
+    private static List<ProClient> proClients = makeProClients();
+    private static List<Order> orders = makeOrders();
+    private static List<Tour> tours = makeTours();
+    private static List<Hotel> hotels = makeHotels();
 
     private static List<Client> makeClients() {
         List<Client> clients = new ArrayList<>();
@@ -96,6 +96,7 @@ public class DataProviderJdbcTest {
         order1.setClientId(1);
         order1.setDueDate(new Date(116, 8, 2));
         order1.setStatus(OrderStatus.SENT);
+        order1.setPro(false);
 
         Order order2 = new Order();
         order2.setId(2);
@@ -103,6 +104,7 @@ public class DataProviderJdbcTest {
         order2.setClientId(2);
         order2.setDueDate(new Date(117, 12, 12));
         order2.setStatus(OrderStatus.PAID);
+        order2.setPro(false);
 
         Order order3 = new Order();
         order3.setId(3);
@@ -110,12 +112,14 @@ public class DataProviderJdbcTest {
         order3.setClientId(3);
         order3.setDueDate(new Date(118, 1, 22));
         order3.setStatus(OrderStatus.SENT);
+        order3.setPro(true);
 
         orders.add(order1);
         orders.add(order2);
         orders.add(order3);
         return orders;
     }
+
 
     private static List<Tour> makeTours() {
         List<Tour> tours = new ArrayList<>();
@@ -222,14 +226,24 @@ public class DataProviderJdbcTest {
             hotelsCheck.add((Hotel) obj);
         }
 
-        assertEquals(clients, clientsCheck);
-        assertEquals(proClients, proClientsCheck);
-        assertEquals(orders, ordersCheck);
-        assertEquals(tours, toursCheck);
-        assertEquals(hotels, hotelsCheck);
-
-
+        for (Client client : clients) {
+            assert clientsCheck.contains(client);
+        }
+        for (ProClient proClient : proClients) {
+            assert proClientsCheck.contains(proClient);
+        }
+        for (Order order : orders) {
+            assert ordersCheck.contains(order);
+        }
+        for (Tour tour : tours) {
+            assert toursCheck.contains(tour);
+        }
+        for (Hotel hotel : hotels) {
+            assert hotelsCheck.contains(hotel);
+        }
     }
+
+
     @Test
     public void b_getByIdAndUpdate() {
         long testId = clients.get(1).getId();

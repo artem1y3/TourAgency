@@ -10,6 +10,7 @@ public class Order {
     private long tourId;
     private OrderStatus status;
     private Date dueDate;
+    private boolean isPro;
 
     public long getId() {
         return id;
@@ -49,6 +50,14 @@ public class Order {
 
     public void setDueDate(Date dueDate) {
         this.dueDate = dueDate;
+    }
+
+    public boolean isPro() {
+        return isPro;
+    }
+
+    public void setPro(boolean pro) {
+        isPro = pro;
     }
 
     @Override
