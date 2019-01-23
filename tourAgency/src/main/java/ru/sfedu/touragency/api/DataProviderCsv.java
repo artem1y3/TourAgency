@@ -73,12 +73,13 @@ public class DataProviderCsv implements DataProvider {
             case ORDER:
                 Order order = (Order) model;
                 SimpleDateFormat formater = new SimpleDateFormat("dd.MM.yyyy");
-                row = new String[5];
+                row = new String[6];
                 row[0] = String.valueOf(order.getId());
                 row[1] = String.valueOf(order.getClientId());
                 row[2] = String.valueOf(order.getTourId());
                 row[3] = String.valueOf(order.getStatus());
                 row[4] = String.valueOf(formater.format(order.getDueDate()));
+                row[5] = String.valueOf(order.isPro());
                 break;
             case HOTEL:
                 Hotel hotel = (Hotel)model;
@@ -131,7 +132,7 @@ public class DataProviderCsv implements DataProvider {
                 order.setTourId(Long.parseLong(row[2]));
                 order.setStatus(OrderStatus.valueOf(row[3]));
                 order.setDueDate(Date.valueOf(LocalDate.parse(row[4], DateTimeFormatter.ofPattern("dd.MM.yyyy"))));
-
+                order.setPro(Boolean.valueOf(row[5]));
                 return order;
             case HOTEL:
                 Hotel hotel = new Hotel();
@@ -268,6 +269,134 @@ public class DataProviderCsv implements DataProvider {
             Files.write(Paths.get(dataSourcePath), new byte[0], StandardOpenOption.TRUNCATE_EXISTING);
         } catch (IOException e) {
             LOG.info(e);
+        }
+    }
+
+    private static boolean isLong(String s){
+        try{
+            Long.parseLong(s);
+            return true;
+        } catch (NumberFormatException e){
+            return false;
+        }
+    }
+
+    private static boolean isInt(String s){
+        try{
+            Integer.parseInt(s);
+            return true;
+        } catch (NumberFormatException e){
+            return false;
+        }
+    }
+
+    private static boolean isCounty(String s){
+        try{
+            Country.valueOf(s);
+            return true;
+        } catch (Exception e){
+            return false;
+        }
+    }
+
+    private static boolean isOrderStatus(String s){
+        try{
+            OrderStatus.valueOf(s);
+            return true;
+        } catch (Exception e){
+            return false;
+        }
+    }
+
+    private static boolean isBoolean(String s){
+        try{
+            Boolean.parseBoolean(s);
+            return true;
+        } catch (Exception e){
+            return false;
+        }
+    }
+
+    public void validate(){
+        try(Reader fileReader = new FileReader(dataSourcePath);
+            CSVReader reader = new CSVReader(fileReader)) {
+
+            List<String[]> models = reader.readAll();
+            for (int i = 0; i < models.size(); i++) {
+                if(!isLong(models.get(i)[0])){
+                    LOG.info("[csv_" + type.toString() + ":" + i + "]: id field should be long");
+                }
+                switch (type) {
+                    case PRO_USER:
+                        if (!isInt(models.get(i)[5])){
+                            LOG.info("[csv_" + type.toString() + ":" + i + "]: discount should be number");
+                        }
+                        if (!isInt(models.get(i)[6])){
+                            LOG.info("[csv_" + type.toString() + ":" + i + "]: points should be number");
+                        }
+                    case SIMPLE_USER:
+                        String email = models.get(i)[1];
+                        if(!email.matches("\\w+@\\w+")){
+                            LOG.info("[csv_" + type.toString() + ":" + i + "]: wrong email format");
+                        }
+                        break;
+                    case ORDER:
+                        if (!isLong(models.get(i)[1])){
+                            LOG.info("[csv_" + type.toString() + ":" + i + "]: clientId should be number");
+                        }
+                        if(isBoolean(models.get(i)[5])){
+                            if(Boolean.parseBoolean(models.get(i)[5])){
+                                if(new DataProviderCsv(ModelType.PRO_USER).getById(Long.parseLong(models.get(i)[1]))==null){
+                                    LOG.info("[csv_" + type.toString() + ":" + i + "]: clientId broken reference");
+                                }
+                            } else {
+                                if(new DataProviderCsv(ModelType.SIMPLE_USER).getById(Long.parseLong(models.get(i)[1]))==null){
+                                    LOG.info("[csv_" + type.toString() + ":" + i + "]: clientId broken reference");
+                                }
+                            }
+                        } else {
+                            LOG.info("[csv_" + type.toString() + ":" + i + "]: isPro should be boolean");
+                        }
+
+                        if (!isLong(models.get(i)[2])){
+                            LOG.info("[csv_" + type.toString() + ":" + i + "]: tourId should be number");
+                        }
+                        if(new DataProviderCsv(ModelType.TOUR).getById(Long.parseLong(models.get(i)[2]))==null){
+                            LOG.info("[csv_" + type.toString() + ":" + i + "]: tourId broken reference");
+                        }
+                        if (!isOrderStatus(models.get(i)[3])){
+                            LOG.info("[csv_" + type.toString() + ":" + i + "]: invalid order status");
+                        }
+                        if(!models.get(i)[4].matches("\\d{2}\\.\\d{2}\\.\\d{4}")) {
+                            LOG.info("[csv_" + type.toString() + ":" + i + "]: invalid date format");
+                        }
+                        break;
+                    case HOTEL:
+                        if (!isInt(models.get(i)[3])){
+                            LOG.info("[csv_" + type.toString() + ":" + i + "]: rate should be number");
+                        }
+                        break;
+                    case TOUR:
+                        if (!isInt(models.get(i)[3])){
+                            LOG.info("[csv_" + type.toString() + ":" + i + "]: dayCount should be number");
+                        }
+                        if (!isCounty(models.get(i)[4])){
+                            LOG.info("[csv_" + type.toString() + ":" + i + "]: dayCount should be number");
+                        }
+                        if (!isInt(models.get(i)[6])){
+                            LOG.info("[csv_" + type.toString() + ":" + i + "]: dayCount should be number");
+                        }
+                        if (!isLong(models.get(i)[7])){
+                            LOG.info("[csv_" + type.toString() + ":" + i + "]: clientId should be number");
+                        }
+                        if(new DataProviderCsv(ModelType.HOTEL).getById(Long.parseLong(models.get(i)[7]))==null){
+                            LOG.info("[csv_" + type.toString() + ":" + i + "]: hotel broken reference");
+                        }
+                        break;
+                }
+            }
+        } catch (IOException ex) {
+            LOG.error(ex);
         }
     }
 }

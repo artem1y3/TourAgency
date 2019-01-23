@@ -96,6 +96,7 @@ public class DataProviderJdbcTest {
         order1.setClientId(1);
         order1.setDueDate(new Date(116, 8, 2));
         order1.setStatus(OrderStatus.SENT);
+        order1.setPro(false);
 
         Order order2 = new Order();
         order2.setId(2);
@@ -103,6 +104,7 @@ public class DataProviderJdbcTest {
         order2.setClientId(2);
         order2.setDueDate(new Date(117, 12, 12));
         order2.setStatus(OrderStatus.PAID);
+        order2.setPro(false);
 
         Order order3 = new Order();
         order3.setId(3);
@@ -110,12 +112,14 @@ public class DataProviderJdbcTest {
         order3.setClientId(3);
         order3.setDueDate(new Date(118, 1, 22));
         order3.setStatus(OrderStatus.SENT);
+        order3.setPro(true);
 
         orders.add(order1);
         orders.add(order2);
         orders.add(order3);
         return orders;
     }
+
 
     private static List<Tour> makeTours() {
         List<Tour> tours = new ArrayList<>();
