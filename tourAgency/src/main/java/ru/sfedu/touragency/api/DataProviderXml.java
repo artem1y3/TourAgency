@@ -259,7 +259,7 @@ public class DataProviderXml implements DataProvider {
                         }
                     case SIMPLE_USER:
                         String email = models.get(i)[1];
-                        if(!email.matches("\\w+@\\w+")){
+                        if(!email.matches("\\w+@\\w+(\\.\\w+)?")){
                             LOG.info("[xml_" + type.toString() + ":" + i + "]: wrong email format");
                         }
                         break;
@@ -301,10 +301,10 @@ public class DataProviderXml implements DataProvider {
                             LOG.info("[xml_" + type.toString() + ":" + i + "]: dayCount should be number");
                         }
                         if (!isCounty(models.get(i)[4])){
-                            LOG.info("[xml_" + type.toString() + ":" + i + "]: dayCount should be number");
+                            LOG.info("[xml_" + type.toString() + ":" + i + "]: invalid country");
                         }
                         if (!isInt(models.get(i)[6])){
-                            LOG.info("[xml_" + type.toString() + ":" + i + "]: dayCount should be number");
+                            LOG.info("[xml_" + type.toString() + ":" + i + "]: price should be number");
                         }
                         if (!isLong(models.get(i)[7])){
                             LOG.info("[xml_" + type.toString() + ":" + i + "]: clientId should be number");
