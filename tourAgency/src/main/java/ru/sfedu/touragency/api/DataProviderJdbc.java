@@ -151,7 +151,7 @@ public class DataProviderJdbc implements DataProvider, Closeable {
                     break;
                 case ORDER:
                     Order order = (Order) model;
-                    SimpleDateFormat formater = new SimpleDateFormat("dd.MM.yyyy");
+                    SimpleDateFormat formater = new SimpleDateFormat(ConfigurationUtil.getConfigurationEntry(Constants.DATE_FORMAT));
                     st.executeUpdate(String.format("UPDATE Orders SET clientId=%d, tourId=%d, status='%s', orderDate='%s', isPro='%s' WHERE id=%d",
                             order.getClientId(),
                             order.getTourId(),
@@ -184,6 +184,8 @@ public class DataProviderJdbc implements DataProvider, Closeable {
             }
         } catch (SQLException e) {
             LOG.error(e);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -227,7 +229,7 @@ public class DataProviderJdbc implements DataProvider, Closeable {
                         order.setClientId(rs.getLong(2));
                         order.setTourId(rs.getLong(3));
                         order.setStatus(OrderStatus.valueOf(rs.getString(4)));
-                        order.setDueDate(Date.valueOf(LocalDate.parse( rs.getString(5),DateTimeFormatter.ofPattern("dd.MM.yyyy"))));
+                        order.setDueDate(Date.valueOf(LocalDate.parse( rs.getString(5),DateTimeFormatter.ofPattern(ConfigurationUtil.getConfigurationEntry(Constants.DATE_FORMAT)))));
                         order.setPro(rs.getBoolean(6));
                         models.add(order);
                     }
@@ -258,7 +260,7 @@ public class DataProviderJdbc implements DataProvider, Closeable {
                     }
                     break;
             }
-        } catch (SQLException e) {
+        } catch (SQLException | IOException e) {
             LOG.error(e);
         }
         return models;
@@ -303,7 +305,7 @@ public class DataProviderJdbc implements DataProvider, Closeable {
                         order.setClientId(rs.getLong(2));
                         order.setTourId(rs.getLong(3));
                         order.setStatus(OrderStatus.valueOf(rs.getString(4)));
-                        order.setDueDate(Date.valueOf(LocalDate.parse(rs.getString(5),DateTimeFormatter.ofPattern("dd.MM.yyyy"))));
+                        order.setDueDate(Date.valueOf(LocalDate.parse(rs.getString(5),DateTimeFormatter.ofPattern(ConfigurationUtil.getConfigurationEntry(Constants.DATE_FORMAT)))));
                         order.setPro(rs.getBoolean(6));
                         return order;
                     }
@@ -335,6 +337,8 @@ public class DataProviderJdbc implements DataProvider, Closeable {
             }
         } catch (SQLException e) {
             LOG.error(e);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         return null;
     }

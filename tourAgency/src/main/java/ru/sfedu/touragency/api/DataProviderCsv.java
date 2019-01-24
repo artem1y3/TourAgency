@@ -17,14 +17,41 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class DataProviderCsv implements DataProvider {
     private static final Logger LOG = Logger.getLogger(DataProviderCsv.class);
     private String dataSourcePath;
     private ModelType type;
 
+    // id_user, id_tour
+    public boolean OrderTour(int idUser, int idTour) {
+        Order order = new Order();
+        long maxId = 0;
+        for (Long id : getAllIds()) {
+            if (id > maxId) {
+                maxId = id;
+            }
+        }
+        long id = maxId + 1;
+        order.setId(id);
+        order.setClientId(idUser);
+        order.setTourId(idTour);
+        order.setStatus(OrderStatus.SENT);
 
-    public DataProviderCsv(ModelType type){
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+//        Date date = new Date();
+//        System.out.println(dateFormat.format(date)); //2016/11/16 12:08:43
+
+        java.util.Date date = new java.util.Date();
+        order.setDueDate(date);
+        save(order, id);
+        return true;
+    }
+
+    ;
+
+    public DataProviderCsv(ModelType type) {
         this.type = type;
         String root;
         try {
@@ -34,7 +61,7 @@ public class DataProviderCsv implements DataProvider {
             return;
         }
 
-        if(Files.notExists(Paths.get(root))){
+        if (Files.notExists(Paths.get(root))) {
             try {
                 Files.createDirectory(Paths.get(root));
             } catch (IOException ex) {
@@ -47,9 +74,9 @@ public class DataProviderCsv implements DataProvider {
         dataSourcePath = Paths.get(root, filename + ".csv").toString();
     }
 
-    public static String[] modelToStringArray(Object model, ModelType type){
+    public static String[] modelToStringArray(Object model, ModelType type) {
         String[] row = null;
-        switch(type){
+        switch (type) {
             case SIMPLE_USER:
                 Client client = (Client) model;
                 row = new String[5];
@@ -72,7 +99,13 @@ public class DataProviderCsv implements DataProvider {
                 break;
             case ORDER:
                 Order order = (Order) model;
-                SimpleDateFormat formater = new SimpleDateFormat("dd.MM.yyyy");
+                SimpleDateFormat formater = null;
+                try {
+                    formater = new SimpleDateFormat(ConfigurationUtil.getConfigurationEntry(Constants.DATE_FORMAT));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+//                SimpleDateFormat formater = new SimpleDateFormat("dd.MM.yyyy");
                 row = new String[6];
                 row[0] = String.valueOf(order.getId());
                 row[1] = String.valueOf(order.getClientId());
@@ -82,7 +115,7 @@ public class DataProviderCsv implements DataProvider {
                 row[5] = String.valueOf(order.isPro());
                 break;
             case HOTEL:
-                Hotel hotel = (Hotel)model;
+                Hotel hotel = (Hotel) model;
                 row = new String[4];
                 row[0] = String.valueOf(hotel.getId());
                 row[1] = hotel.getName();
@@ -104,8 +137,8 @@ public class DataProviderCsv implements DataProvider {
         return row;
     }
 
-    public static Object stringArrayToModel(String[] row, ModelType type){
-        switch(type){
+    public static Object stringArrayToModel(String[] row, ModelType type) {
+        switch (type) {
             case SIMPLE_USER:
                 Client client = new Client();
                 client.setId(Long.parseLong(row[0]));
@@ -131,7 +164,11 @@ public class DataProviderCsv implements DataProvider {
                 order.setClientId(Long.parseLong(row[1]));
                 order.setTourId(Long.parseLong(row[2]));
                 order.setStatus(OrderStatus.valueOf(row[3]));
-                order.setDueDate(Date.valueOf(LocalDate.parse(row[4], DateTimeFormatter.ofPattern("dd.MM.yyyy"))));
+                try {
+                    order.setDueDate(Date.valueOf(LocalDate.parse(row[4], DateTimeFormatter.ofPattern(ConfigurationUtil.getConfigurationEntry(Constants.DATE_FORMAT)))));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 order.setPro(Boolean.valueOf(row[5]));
                 return order;
             case HOTEL:
@@ -159,8 +196,8 @@ public class DataProviderCsv implements DataProvider {
     @Override
     public long save(Object model) {
         long maxId = 0;
-        for(Long id : getAllIds()) {
-            if(id > maxId){
+        for (Long id : getAllIds()) {
+            if (id > maxId) {
                 maxId = id;
             }
         }
@@ -168,13 +205,12 @@ public class DataProviderCsv implements DataProvider {
         return save(model, id);
     }
 
-     private long save(Object model, long id) {
-        try(FileOutputStream fos = new FileOutputStream(dataSourcePath, true);
-            Writer writer = new OutputStreamWriter(fos);
-            CSVWriter csvWriter = new CSVWriter(writer))
-        {
+    private long save(Object model, long id) {
+        try (FileOutputStream fos = new FileOutputStream(dataSourcePath, true);
+             Writer writer = new OutputStreamWriter(fos);
+             CSVWriter csvWriter = new CSVWriter(writer)) {
             String[] row = modelToStringArray(model, type);
-            if (row != null){
+            if (row != null) {
                 row[0] = String.valueOf(id);
                 csvWriter.writeNext(row);
             } else {
@@ -190,7 +226,7 @@ public class DataProviderCsv implements DataProvider {
     @Override
     public void update(Object model) {
         long id = getId(model);
-        if(getById(id) == null){
+        if (getById(id) == null) {
             return;
         }
         delete(id);
@@ -214,27 +250,37 @@ public class DataProviderCsv implements DataProvider {
         }
     }
 
-    private List<Long> getAllIds(){
+    //    private List<Long> getAllIds() {
+//        List<Object> all = getAll();
+//        List<Long> ids = new ArrayList<>();
+//        for (Object model : all) {
+//            ids.add(getId(model));
+//        }
+//        return ids;
+//    }
+    private List<Long> getAllIds() {
         List<Object> all = getAll();
-        List<Long> ids = new ArrayList<>();
-        for(Object model : all){
-            ids.add(getId(model));
-        }
+        List<Long> ids;
+//        for (Object model : all) {
+//            ids.add(getId(model));
+//        }
+        ids = all.stream().map(item -> getId(item)).collect(Collectors.toList());
         return ids;
     }
 
     @Override
     public List<Object> getAll() {
-        try(Reader fileReader = new FileReader(dataSourcePath);
-            CSVReader reader = new CSVReader(fileReader)) {
-                List<Object> models = new ArrayList<>();
-                List<String[]> result = reader.readAll();
-                for(String[] row: result) {
-                    models.add(stringArrayToModel(row, type));
-                }
+        try (Reader fileReader = new FileReader(dataSourcePath);
+             CSVReader reader = new CSVReader(fileReader)) {
+            List<Object> models = new ArrayList<>();
+            List<String[]> result = reader.readAll();
+//            for (String[] row : result) {
+//                models.add(stringArrayToModel(row, type));
+//            }
+            models = result.stream().map(item -> stringArrayToModel(item, type)).collect(Collectors.toList());
             return models;
         } catch (IOException ex) {
-            LOG.error(ex);
+            LOG.info(ex);
         }
         return new ArrayList<>(); //returns empty list if fail
     }
@@ -242,8 +288,8 @@ public class DataProviderCsv implements DataProvider {
     @Override
     public Object getById(long id) {
         List<Object> all = getAll();
-        for(Object model : all) {
-            if(id == getId(model)){
+        for (Object model : all) {
+            if (id == getId(model)) {
                 return model;
             }
         }
@@ -252,13 +298,13 @@ public class DataProviderCsv implements DataProvider {
 
     @Override
     public void delete(long id) {
-        if(getById(id) == null){
+        if (getById(id) == null) {
             return;
         }
         List<Object> all = getAll();
         clear();
-        for (Object model : all){
-            if(id != getId(model)){
+        for (Object model : all) {
+            if (id != getId(model)) {
                 save(model, getId(model));
             }
         }
@@ -272,125 +318,191 @@ public class DataProviderCsv implements DataProvider {
         }
     }
 
-    private static boolean isLong(String s){
-        try{
+    private static boolean isLong(String s) {
+        try {
             Long.parseLong(s);
             return true;
-        } catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             return false;
         }
     }
 
-    private static boolean isInt(String s){
-        try{
+    private static boolean isInt(String s) {
+        try {
             Integer.parseInt(s);
             return true;
-        } catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             return false;
         }
     }
 
-    private static boolean isCounty(String s){
-        try{
+    private static boolean isCounty(String s) {
+        try {
             Country.valueOf(s);
             return true;
-        } catch (Exception e){
+        } catch (Exception e) {
             return false;
         }
     }
 
-    private static boolean isOrderStatus(String s){
-        try{
+    private static boolean isOrderStatus(String s) {
+        try {
             OrderStatus.valueOf(s);
             return true;
-        } catch (Exception e){
+        } catch (Exception e) {
             return false;
         }
     }
 
-    private static boolean isBoolean(String s){
-        try{
+    private static boolean isBoolean(String s) {
+        try {
             Boolean.parseBoolean(s);
             return true;
-        } catch (Exception e){
+        } catch (Exception e) {
             return false;
         }
     }
 
-    public void validate(){
-        try(Reader fileReader = new FileReader(dataSourcePath);
-            CSVReader reader = new CSVReader(fileReader)) {
+    public boolean validateColumns() {
+        try (Reader fileReader = new FileReader(dataSourcePath);
+             CSVReader reader = new CSVReader(fileReader)) {
 
             List<String[]> models = reader.readAll();
             for (int i = 0; i < models.size(); i++) {
-                if(!isLong(models.get(i)[0])){
-                    LOG.info("[csv_" + type.toString() + ":" + i + "]: id field should be long");
+                if (!isLong(models.get(i)[0])) {
+                    LOG.info("[csv_" + type.toString() + ":" + (i + 1) + "]: id field should be long");
+                    throw new IOException();
+                }
+                for (int j = 0; j < models.get(i).length; j++) {
+                    if (new String(models.get(i)[j]).equals(new String(""))) {
+                        LOG.error("[csv_" + type.toString() + ":" + (i + 1) + "]: Attribute is empty at " + (j + 1) + " position");
+                        throw new IOException();
+                    }
                 }
                 switch (type) {
                     case PRO_USER:
-                        if (!isInt(models.get(i)[5])){
-                            LOG.info("[csv_" + type.toString() + ":" + i + "]: discount should be number");
+                        if (models.get(i).length != 7) {
+                            LOG.error("[csv_" + type.toString() + ":" + (i + 1) + "]: Row has error");
+                            throw new IOException();
                         }
-                        if (!isInt(models.get(i)[6])){
-                            LOG.info("[csv_" + type.toString() + ":" + i + "]: points should be number");
-                        }
+                        break;
                     case SIMPLE_USER:
-                        String email = models.get(i)[1];
-                        if(!email.matches("\\w+@\\w+(\\.\\w+)?")){
-                            LOG.info("[csv_" + type.toString() + ":" + i + "]: wrong email format");
+                        if (models.get(i).length != 5) {
+                            LOG.error("[csv_" + type.toString() + ":" + (i + 1) + "]: Row has error");
+                            throw new IOException();
                         }
                         break;
                     case ORDER:
-                        if (!isLong(models.get(i)[1])){
-                            LOG.info("[csv_" + type.toString() + ":" + i + "]: clientId should be number");
-                        }
-                        if(isBoolean(models.get(i)[5])){
-                            if(Boolean.parseBoolean(models.get(i)[5])){
-                                if(new DataProviderCsv(ModelType.PRO_USER).getById(Long.parseLong(models.get(i)[1]))==null){
-                                    LOG.info("[csv_" + type.toString() + ":" + i + "]: clientId broken reference");
-                                }
-                            } else {
-                                if(new DataProviderCsv(ModelType.SIMPLE_USER).getById(Long.parseLong(models.get(i)[1]))==null){
-                                    LOG.info("[csv_" + type.toString() + ":" + i + "]: clientId broken reference");
-                                }
-                            }
-                        } else {
-                            LOG.info("[csv_" + type.toString() + ":" + i + "]: isPro should be boolean");
-                        }
-
-                        if (!isLong(models.get(i)[2])){
-                            LOG.info("[csv_" + type.toString() + ":" + i + "]: tourId should be number");
-                        }
-                        if(new DataProviderCsv(ModelType.TOUR).getById(Long.parseLong(models.get(i)[2]))==null){
-                            LOG.info("[csv_" + type.toString() + ":" + i + "]: tourId broken reference");
-                        }
-                        if (!isOrderStatus(models.get(i)[3])){
-                            LOG.info("[csv_" + type.toString() + ":" + i + "]: invalid order status");
-                        }
-                        if(!models.get(i)[4].matches("\\d{2}\\.\\d{2}\\.\\d{4}")) {
-                            LOG.info("[csv_" + type.toString() + ":" + i + "]: invalid date format");
-                        }
-                        break;
-                    case HOTEL:
-                        if (!isInt(models.get(i)[3])){
-                            LOG.info("[csv_" + type.toString() + ":" + i + "]: rate should be number");
+                        if (models.get(i).length != 6) {
+                            LOG.error("[csv_" + type.toString() + ":" + (i + 1) + "]: Row has error");
+                            throw new IOException();
                         }
                         break;
                     case TOUR:
-                        if (!isInt(models.get(i)[3])){
-                            LOG.info("[csv_" + type.toString() + ":" + i + "]: dayCount should be number");
+                        if (models.get(i).length != 8) {
+                            LOG.error("[csv_" + type.toString() + ":" + (i + 1) + "]: Row has error");
+                            throw new IOException();
                         }
-                        if (!isCounty(models.get(i)[4])){
-                            LOG.info("[csv_" + type.toString() + ":" + i + "]: wrong country value");
+                        break;
+                    case HOTEL:
+                        if (models.get(i).length != 4) {
+                            LOG.error("[csv_" + type.toString() + ":" + (i + 1) + "]: Row has error");
+                            throw new IOException();
                         }
-                        if (!isInt(models.get(i)[6])){
-                            LOG.info("[csv_" + type.toString() + ":" + i + "]: price should be number");
+                        break;
+                }
+            }
+
+            return true;
+        } catch (IOException ex) {
+//            LOG.error(ex);
+            return false;
+        }
+    }
+
+    public void validate() {
+        try (Reader fileReader = new FileReader(dataSourcePath);
+             CSVReader reader = new CSVReader(fileReader)) {
+
+
+            List<String[]> models = reader.readAll();
+
+            boolean noEmpty = true;
+
+            for (int i = 0; i < models.size(); i++) {
+                if (!isLong(models.get(i)[0])) {
+                    LOG.info("[csv_" + type.toString() + ":" + (i + 1) + "]: id field should be long");
+                    continue;
+                }
+                switch (type) {
+                    case PRO_USER:
+                        if (!isInt(models.get(i)[5])) {
+                            LOG.info("[csv_" + type.toString() + ":" + (i + 1) + "]: discount should be number");
                         }
-                        if (!isLong(models.get(i)[7])){
-                            LOG.info("[csv_" + type.toString() + ":" + i + "]: clientId should be number");
+                        if (!isInt(models.get(i)[6])) {
+                            LOG.info("[csv_" + type.toString() + ":" + (i + 1) + "]: points should be number");
                         }
-                        if(new DataProviderCsv(ModelType.HOTEL).getById(Long.parseLong(models.get(i)[7]))==null){
-                            LOG.info("[csv_" + type.toString() + ":" + i + "]: hotel broken reference");
+                    case SIMPLE_USER:
+                        String email = models.get(i)[1];
+                        if (!email.matches("\\w+@\\w+(\\.\\w+)?")) {
+                            LOG.info("[csv_" + type.toString() + ":" + (i + 1) + "]: wrong email format");
+                            continue;
+                        }
+                        break;
+                    case ORDER:
+                        if (!isLong(models.get(i)[1])) {
+                            LOG.info("[csv_" + type.toString() + ":" + (i + 1) + "]: clientId should be number");
+                        }
+                        if (!isLong(models.get(i)[2])) {
+                            LOG.info("[csv_" + type.toString() + ":" + (i + 1) + "]: tourId should be number");
+                        }
+                        if (isBoolean(models.get(i)[5])) {
+                            if (Boolean.parseBoolean(models.get(i)[5])) {
+                                if (new DataProviderCsv(ModelType.PRO_USER).getById(Long.parseLong(models.get(i)[1])) == null) {
+                                    LOG.info("[csv_" + type.toString() + ":" + (i + 1) + "]: clientId broken reference");
+                                }
+                            } else {
+                                if (new DataProviderCsv(ModelType.SIMPLE_USER).getById(Long.parseLong(models.get(i)[1])) == null) {
+                                    LOG.info("[csv_" + type.toString() + ":" + (i + 1) + "]: clientId broken reference");
+                                }
+                            }
+                        } else {
+                            LOG.info("[csv_" + type.toString() + ":" + (i + 1) + "]: isPro should be boolean");
+                        }
+
+                        if (!isLong(models.get(i)[2])) {
+                            LOG.info("[csv_" + type.toString() + ":" + (i + 1) + "]: tourId should be number");
+                        }
+                        if (new DataProviderCsv(ModelType.TOUR).getById(Long.parseLong(models.get(i)[2])) == null) {
+                            LOG.info("[csv_" + type.toString() + ":" + (i + 1) + "]: tourId broken reference");
+                        }
+                        if (!isOrderStatus(models.get(i)[3])) {
+                            LOG.info("[csv_" + type.toString() + ":" + (i + 1) + "]: invalid order status");
+                        }
+                        if (!models.get(i)[4].matches("\\d{2}\\.\\d{2}\\.\\d{4}")) {
+                            LOG.info("[csv_" + type.toString() + ":" + (i + 1) + "]: invalid date format");
+                        }
+                        break;
+                    case HOTEL:
+                        if (!isInt(models.get(i)[3])) {
+                            LOG.info("[csv_" + type.toString() + ":" + (i + 1) + "]: rate should be number");
+                        }
+                        break;
+                    case TOUR:
+                        if (!isInt(models.get(i)[3])) {
+                            LOG.info("[csv_" + type.toString() + ":" + (i + 1) + "]: dayCount should be number");
+                        }
+                        if (!isCounty(models.get(i)[4])) {
+                            LOG.info("[csv_" + type.toString() + ":" + (i + 1) + "]: wrong country value");
+                        }
+                        if (!isInt(models.get(i)[6])) {
+                            LOG.info("[csv_" + type.toString() + ":" + (i + 1) + "]: price should be number");
+                        }
+                        if (!isLong(models.get(i)[7])) {
+                            LOG.info("[csv_" + type.toString() + ":" + (i + 1) + "]: clientId should be number");
+                        }
+                        if (new DataProviderCsv(ModelType.HOTEL).getById(Long.parseLong(models.get(i)[7])) == null) {
+                            LOG.info("[csv_" + type.toString() + ":" + (i + 1) + "]: hotel broken reference");
                         }
                         break;
                 }

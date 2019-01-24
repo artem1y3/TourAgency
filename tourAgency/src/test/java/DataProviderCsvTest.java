@@ -273,12 +273,19 @@ public class DataProviderCsvTest {
     }
 
     @Test
-    public void c_validate(){
-        clientDataProviderCsv.validate();
-        proClientDataProviderCsv.validate();
-        orderDataProviderCsv.validate();
-        tourDataProviderCsv.validate();
-        hotelDataProviderCsv.validate();
+    public void c_validate() {
+        if (
+                clientDataProviderCsv.validateColumns() &
+                        proClientDataProviderCsv.validateColumns() &
+                        orderDataProviderCsv.validateColumns() &
+                        tourDataProviderCsv.validateColumns() &
+                        hotelDataProviderCsv.validateColumns()) {
+            clientDataProviderCsv.validate();
+            proClientDataProviderCsv.validate();
+            tourDataProviderCsv.validate();
+            hotelDataProviderCsv.validate();
+            orderDataProviderCsv.validate();
+        }
     }
 
     @Test
@@ -328,8 +335,9 @@ public class DataProviderCsvTest {
         assertEquals(tours, toursCheck);
         assertEquals(hotels, hotelsCheck);
     }
+
     @Test
-    public void z_clearall(){
+    public void z_clearall() {
         for (Object obj : clientDataProviderCsv.getAll()) {
             clientDataProviderCsv.delete(((Client) obj).getId());
         }
@@ -345,6 +353,13 @@ public class DataProviderCsvTest {
         for (Object obj : hotelDataProviderCsv.getAll()) {
             hotelDataProviderCsv.delete(((Hotel) obj).getId());
         }
+    }
+
+
+    @Test
+    public void orderTour() {
+        DataProviderCsv data = new DataProviderCsv(ModelType.ORDER);
+        data.OrderTour(1,1);
     }
 
 

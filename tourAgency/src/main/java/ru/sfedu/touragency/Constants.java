@@ -8,4 +8,7 @@ public class Constants {
     public static final String DB_USER = "db_user";
     public static final String DB_USER_PASSWORD = "db_user_password";
     public static final String DRIVER_CLASS = "driver_class";
+
+
+    public static final String DATE_FORMAT = "date_format";
 }
