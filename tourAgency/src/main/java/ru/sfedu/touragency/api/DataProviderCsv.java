@@ -19,37 +19,41 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import java.util.Arrays;
+
 public class DataProviderCsv implements DataProvider {
     private static final Logger LOG = Logger.getLogger(DataProviderCsv.class);
     private String dataSourcePath;
     private ModelType type;
 
     // id_user, id_tour
-    public boolean OrderTour(int idUser, int idTour) {
+    public void OrderTour(int idUser, int idTour, boolean isPro) {
         Order order = new Order();
-        long maxId = 0;
-        for (Long id : getAllIds()) {
-            if (id > maxId) {
-                maxId = id;
-            }
-        }
+        long maxId = getAllIds().stream().reduce(Long::max).orElse((long) -1);
+//        for (Long id : getAllIds()) {
+//            if (id > maxId) {
+//                maxId = id;
+//            }
+//        }
         long id = maxId + 1;
         order.setId(id);
         order.setClientId(idUser);
         order.setTourId(idTour);
         order.setStatus(OrderStatus.SENT);
+        order.setPro(isPro);
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
 //        Date date = new Date();
 //        System.out.println(dateFormat.format(date)); //2016/11/16 12:08:43
-
         java.util.Date date = new java.util.Date();
         order.setDueDate(date);
         save(order, id);
-        return true;
+        String message = "Заказ под номером '" + id + "'" + " тура " + idTour + " оформлен на пользователя с id: " + "'" + idUser + "'";
+        if (isPro) {
+            message += " со статусом PRO";
+        }
+        LOG.info(message);
     }
-
-    ;
 
     public DataProviderCsv(ModelType type) {
         this.type = type;
