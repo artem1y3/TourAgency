@@ -20,168 +20,84 @@ public class DataProviderCsvTest {
     private static DataProviderCsv tourDataProviderCsv = new DataProviderCsv(ModelType.TOUR);
     private static DataProviderCsv hotelDataProviderCsv = new DataProviderCsv(ModelType.HOTEL);
 
-    private static List<Client> clients = makeClients();
-    private static List<ProClient> proClients = makeProClients();
-    private static List<Order> orders = makeOrders();
-    private static List<Tour> tours = makeTours();
-    private static List<Hotel> hotels = makeHotels();
+    private static List<Client> clients = makeClients(3);
+    private static List<ProClient> proClients = makeProClients(3);
+    private static List<Order> orders = makeOrders(3);
+    private static List<Tour> tours = makeTours(3);
+    private static List<Hotel> hotels = makeHotels(3);
 
-    private static List<Client> makeClients() {
+    private static List<Client> makeClients(int count) {
         List<Client> clients = new ArrayList<>();
-        Client client1 = new Client();
-        client1.setId(1);
-        client1.setEmail("so@ba.ka");
-        client1.setPassword("123");
-        client1.setLastName("Galagidze");
-        client1.setFirstName("Maramadzai");
-
-        Client client2 = new Client();
-        client2.setId(2);
-        client2.setEmail("na@ru.to");
-        client2.setPassword("1234");
-        client2.setLastName("Uchiha");
-        client2.setFirstName("Sasuke");
-
-        Client client3 = new Client();
-        client3.setId(3);
-        client3.setEmail("sa@su.ke");
-        client3.setPassword("5213");
-        client3.setLastName("Uzumaki");
-        client3.setFirstName("Naruto");
-        clients.add(client1);
-        clients.add(client2);
-        clients.add(client3);
+        for (int i = 0; i < count; i++) {
+            Client client1 = new Client();
+            client1.setId(i + 1);
+            client1.setEmail("so" + i + "@ba.ka");
+            client1.setPassword("TestPassword" + i);
+            client1.setLastName("TestLastName" + i);
+            client1.setFirstName("TestFirstName");
+            clients.add(client1);
+        }
         return clients;
     }
 
-    private static List<ProClient> makeProClients() {
+    private static List<ProClient> makeProClients(int count) {
         List<ProClient> proClients = new ArrayList<>();
-        ProClient proClient1 = new ProClient();
-        proClient1.setId(1);
-        proClient1.setEmail("ka@bu.ka");
-        proClient1.setPassword("123");
-        proClient1.setLastName("Galagidze");
-        proClient1.setFirstName("Maramadzai");
-        proClient1.setDiscount(20);
-        proClient1.setPoints(120);
-
-        ProClient proClient2 = new ProClient();
-        proClient2.setId(2);
-        proClient2.setEmail("kdsds@bua.ka");
-        proClient2.setPassword("123");
-        proClient2.setLastName("Anasim");
-        proClient2.setFirstName("Kukusim");
-        proClient2.setDiscount(30);
-        proClient2.setPoints(590);
-
-        ProClient proClient3 = new ProClient();
-        proClient3.setId(3);
-        proClient3.setEmail("1x@be.t");
-        proClient3.setPassword("123");
-        proClient3.setLastName("Pokeb");
-        proClient3.setFirstName("Ollest");
-        proClient3.setDiscount(40);
-        proClient3.setPoints(10000);
-
-        proClients.add(proClient1);
-        proClients.add(proClient2);
-        proClients.add(proClient3);
+        for (int i = 0; i < count; i++) {
+            ProClient proClient1 = new ProClient();
+            proClient1.setId(i + 1);
+            proClient1.setEmail("ka" + i + "@bu.ka");
+            proClient1.setPassword("TestPassword" + i);
+            proClient1.setLastName("TestLastName" + i);
+            proClient1.setFirstName("TestFirstName" + i);
+            proClient1.setDiscount(20 + i);
+            proClient1.setPoints(120 + i);
+            proClients.add(proClient1);
+        }
         return proClients;
     }
 
-    private static List<Order> makeOrders() {
+    private static List<Order> makeOrders(int count) {
         List<Order> orders = new ArrayList<>();
-        Order order1 = new Order();
-        order1.setId(1);
-        order1.setTourId(1);
-        order1.setClientId(1);
-        order1.setDueDate(new Date(116, 8, 2));
-        order1.setStatus(OrderStatus.SENT);
-        order1.setPro(false);
-
-        Order order2 = new Order();
-        order2.setId(2);
-        order2.setTourId(2);
-        order2.setClientId(2);
-        order2.setDueDate(new Date(117, 12, 12));
-        order2.setStatus(OrderStatus.PAID);
-        order2.setPro(false);
-
-        Order order3 = new Order();
-        order3.setId(3);
-        order3.setTourId(3);
-        order3.setClientId(3);
-        order3.setDueDate(new Date(118, 1, 22));
-        order3.setStatus(OrderStatus.SENT);
-        order3.setPro(true);
-
-        orders.add(order1);
-        orders.add(order2);
-        orders.add(order3);
+        for (int i = 0; i < count; i++) {
+            Order order1 = new Order();
+            order1.setId(i + 1);
+            order1.setTourId(1);
+            order1.setClientId(1);
+            order1.setDueDate(new Date(116, 8, 2));
+            order1.setStatus(OrderStatus.SENT);
+            order1.setPro(false);
+            orders.add(order1);
+        }
         return orders;
     }
 
-    private static List<Tour> makeTours() {
+    private static List<Tour> makeTours(int count) {
         List<Tour> tours = new ArrayList<>();
-        Tour tour1 = new Tour();
-        tour1.setId(1);
-        tour1.setPrice(2200);
-        tour1.setCity("Taganrog");
-        tour1.setDayCount(12);
-        tour1.setDescription("Fantastic");
-        tour1.setName("Tagan IS BEST");
-        tour1.setCountry(Country.RUSSIA);
-
-
-        Tour tour2 = new Tour();
-        tour2.setId(2);
-        tour2.setPrice(22200);
-        tour2.setCity("Paris");
-        tour2.setDayCount(3);
-        tour2.setDescription("Francetastic");
-        tour2.setName("FRACLOVE");
-        tour2.setCountry(Country.FRANCE);
-
-        Tour tour3 = new Tour();
-        tour3.setId(3);
-        tour3.setPrice(12200);
-        tour3.setCity("Oslo");
-        tour3.setDayCount(2);
-        tour3.setDescription("Norwegiya");
-        tour3.setName("COOL NORTH");
-        tour3.setCountry(Country.NORWAY);
-
-        tours.add(tour1);
-        tours.add(tour2);
-        tours.add(tour3);
+        for (int i = 0; i < count; i++) {
+            Tour tour1 = new Tour();
+            tour1.setId(i + 1);
+            tour1.setPrice(2200 + i);
+            tour1.setCity("Taganrog");
+            tour1.setDayCount(12 + i);
+            tour1.setDescription("Fantastic");
+            tour1.setName("Tagan IS BEST");
+            tour1.setCountry(Country.RUSSIA);
+            tours.add(tour1);
+        }
         return tours;
     }
 
-    private static List<Hotel> makeHotels() {
+    private static List<Hotel> makeHotels(int count) {
         List<Hotel> hotels = new ArrayList<>();
-        Hotel hotel1 = new Hotel();
-        hotel1.setId(1);
-        hotel1.setName("Verona");
-        hotel1.setDescription("The best hotel of my life");
-        hotel1.setRate(5);
-
-        Hotel hotel2 = new Hotel();
-        hotel2.setId(2);
-        hotel2.setName("Corona");
-        hotel2.setDescription("Poison for body");
-        hotel2.setRate(3);
-
-        Hotel hotel3 = new Hotel();
-        hotel3.setId(3);
-        hotel3.setName("Germiona");
-        hotel3.setDescription("Turkish STYLE");
-        hotel3.setRate(4);
-
-        hotels.add(hotel1);
-        hotels.add(hotel2);
-        hotels.add(hotel3);
+        for (int i = 0; i < count; i++) {
+            Hotel hotel1 = new Hotel();
+            hotel1.setId(1);
+            hotel1.setName("Verona");
+            hotel1.setDescription("The best hotel of my life");
+            hotel1.setRate(5);
+            hotels.add(hotel1);
+        }
         return hotels;
-
     }
 
 //    @Test
