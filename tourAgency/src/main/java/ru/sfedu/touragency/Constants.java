@@ -11,4 +11,5 @@ public class Constants {
 
 
     public static final String DATE_FORMAT = "date_format";
+    public static final String DELIMITER_CSV = "delimiter_csv";
 }

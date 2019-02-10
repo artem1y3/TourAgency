@@ -19,8 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import java.util.Arrays;
-
 public class DataProviderCsv implements DataProvider {
     private static final Logger LOG = Logger.getLogger(DataProviderCsv.class);
     private String dataSourcePath;
@@ -29,14 +27,8 @@ public class DataProviderCsv implements DataProvider {
     // id_user, id_tour
     public void OrderTour(int idUser, int idTour, boolean isPro) {
         Order order = new Order();
-        long maxId = getAllIds().stream().reduce(Long::max).orElse((long) -1);
-//        for (Long id : getAllIds()) {
-//            if (id > maxId) {
-//                maxId = id;
-//            }
-//        }
-        long id = maxId + 1;
-        order.setId(id);
+        long maxId = getAllIds().stream().reduce(Long::max).orElse((long) -1) + 1;
+        order.setId(maxId);
         order.setClientId(idUser);
         order.setTourId(idTour);
         order.setStatus(OrderStatus.SENT);
@@ -47,13 +39,15 @@ public class DataProviderCsv implements DataProvider {
 //        System.out.println(dateFormat.format(date)); //2016/11/16 12:08:43
         java.util.Date date = new java.util.Date();
         order.setDueDate(date);
-        save(order, id);
-        String message = "Заказ под номером '" + id + "'" + " тура " + idTour + " оформлен на пользователя с id: " + "'" + idUser + "'";
+        save(order, maxId);
+        String message = "Заказ под номером '" + maxId + "'" + " тура '" + idTour + "' оформлен на пользователя с id: " + idUser + "'";
         if (isPro) {
             message += " со статусом PRO";
         }
         LOG.info(message);
     }
+
+//    public void ArrangeTour(int OrderId, )
 
     public DataProviderCsv(ModelType type) {
         this.type = type;
@@ -210,9 +204,16 @@ public class DataProviderCsv implements DataProvider {
     }
 
     private long save(Object model, long id) {
+        String str = null;
+        try {
+            str = ConfigurationUtil.getConfigurationEntry(Constants.DELIMITER_CSV);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        char ch = str.charAt(0);
         try (FileOutputStream fos = new FileOutputStream(dataSourcePath, true);
              Writer writer = new OutputStreamWriter(fos);
-             CSVWriter csvWriter = new CSVWriter(writer)) {
+             CSVWriter csvWriter = new CSVWriter(writer, ch)) {
             String[] row = modelToStringArray(model, type);
             if (row != null) {
                 row[0] = String.valueOf(id);
@@ -274,8 +275,15 @@ public class DataProviderCsv implements DataProvider {
 
     @Override
     public List<Object> getAll() {
+        String str = null;
+        try {
+            str = ConfigurationUtil.getConfigurationEntry(Constants.DELIMITER_CSV);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        char ch = str.charAt(0);
         try (Reader fileReader = new FileReader(dataSourcePath);
-             CSVReader reader = new CSVReader(fileReader)) {
+             CSVReader reader = new CSVReader(fileReader, ch)) {
             List<Object> models = new ArrayList<>();
             List<String[]> result = reader.readAll();
 //            for (String[] row : result) {
@@ -367,9 +375,11 @@ public class DataProviderCsv implements DataProvider {
         }
     }
 
-    public boolean validateColumns() {
+    public boolean validateColumns() throws IOException {
+        String str = ConfigurationUtil.getConfigurationEntry(Constants.DELIMITER_CSV);
+        char ch = str.charAt(0);
         try (Reader fileReader = new FileReader(dataSourcePath);
-             CSVReader reader = new CSVReader(fileReader)) {
+             CSVReader reader = new CSVReader(fileReader, ch)) {
 
             List<String[]> models = reader.readAll();
             for (int i = 0; i < models.size(); i++) {
@@ -424,14 +434,25 @@ public class DataProviderCsv implements DataProvider {
         }
     }
 
-    public void validate() {
+    public void validate() throws IOException {
+        String str = ConfigurationUtil.getConfigurationEntry(Constants.DELIMITER_CSV);
+        char ch = str.charAt(0);
         try (Reader fileReader = new FileReader(dataSourcePath);
-             CSVReader reader = new CSVReader(fileReader)) {
+             CSVReader reader = new CSVReader(fileReader, ch)) {
 
 
             List<String[]> models = reader.readAll();
 
-            boolean noEmpty = true;
+//            boolean noEmpty = true;
+
+            for (int i = 0; i < models.size(); i++) {
+                for (int j = i + 1; j < models.size(); j++) {
+                    if (Long.parseLong(models.get(i)[0]) == Long.parseLong(models.get(j)[0])) {
+                        LOG.info("[csv_" + type.toString() + "]: Find duplicate id at row '" + (i + 1) + "' and '" + (j + 1) + "'");
+                        break;
+                    }
+                }
+            }
 
             for (int i = 0; i < models.size(); i++) {
                 if (!isLong(models.get(i)[0])) {
