@@ -1,7 +1,7 @@
 package ru.sfedu.touragency.api;
 
-import com.opencsv.CSVReader;
-import com.opencsv.CSVWriter;
+import com.opencsv.*;
+import com.opencsv.enums.CSVReaderNullFieldIndicator;
 import org.apache.log4j.Logger;
 import ru.sfedu.touragency.Constants;
 import ru.sfedu.touragency.model.*;
@@ -18,6 +18,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import java.text.SimpleDateFormat;
+import java.text.ParseException;
 
 public class DataProviderCsv implements DataProvider {
     private static final Logger LOG = Logger.getLogger(DataProviderCsv.class);
@@ -379,7 +382,15 @@ public class DataProviderCsv implements DataProvider {
         String str = ConfigurationUtil.getConfigurationEntry(Constants.DELIMITER_CSV);
         char ch = str.charAt(0);
         try (Reader fileReader = new FileReader(dataSourcePath);
-             CSVReader reader = new CSVReader(fileReader, ch)) {
+             CSVReader reader = new CSVReaderBuilder(fileReader)
+                     .withCSVParser(
+                             new CSVParserBuilder()
+                                     .withSeparator(ch)
+                                     .withFieldAsNull(CSVReaderNullFieldIndicator.EMPTY_SEPARATORS)
+                                     .build()
+                     )
+                     .build()) {
+//             CSVReader reader = new CSVReader(fileReader, ch)) {
 
             List<String[]> models = reader.readAll();
             for (int i = 0; i < models.size(); i++) {
@@ -388,7 +399,7 @@ public class DataProviderCsv implements DataProvider {
                     throw new IOException();
                 }
                 for (int j = 0; j < models.get(i).length; j++) {
-                    if (new String(models.get(i)[j]).equals(new String(""))) {
+                    if (models.get(i)[j] == null) {
                         LOG.error("[csv_" + type.toString() + ":" + (i + 1) + "]: Attribute is empty at " + (j + 1) + " position");
                         throw new IOException();
                     }
@@ -449,7 +460,7 @@ public class DataProviderCsv implements DataProvider {
                 for (int j = i + 1; j < models.size(); j++) {
                     if (Long.parseLong(models.get(i)[0]) == Long.parseLong(models.get(j)[0])) {
                         LOG.info("[csv_" + type.toString() + "]: Find duplicate id at row '" + (i + 1) + "' and '" + (j + 1) + "'");
-                        break;
+//                        break;
                     }
                 }
             }
@@ -504,8 +515,15 @@ public class DataProviderCsv implements DataProvider {
                         if (!isOrderStatus(models.get(i)[3])) {
                             LOG.info("[csv_" + type.toString() + ":" + (i + 1) + "]: invalid order status");
                         }
-                        if (!models.get(i)[4].matches("\\d{2}\\.\\d{2}\\.\\d{4}")) {
-                            LOG.info("[csv_" + type.toString() + ":" + (i + 1) + "]: invalid date format");
+                        if (models.get(i)[4] != null) {
+                            SimpleDateFormat sdfrmt = new SimpleDateFormat(ConfigurationUtil.getConfigurationEntry(Constants.DATE_FORMAT));
+                            sdfrmt.setLenient(false);
+
+                            try {
+                                java.util.Date javaDate = sdfrmt.parse(models.get(i)[4]);
+                            } catch (ParseException e) {
+                                LOG.info("[csv_" + type.toString() + ":" + (i + 1) + "]: invalid date format");
+                            }
                         }
                         break;
                     case HOTEL:
