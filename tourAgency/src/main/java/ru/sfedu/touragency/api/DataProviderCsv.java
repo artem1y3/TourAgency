@@ -37,9 +37,6 @@ public class DataProviderCsv implements DataProvider {
         order.setStatus(OrderStatus.SENT);
         order.setPro(isPro);
 
-//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
-//        Date date = new Date();
-//        System.out.println(dateFormat.format(date)); //2016/11/16 12:08:43
         java.util.Date date = new java.util.Date();
         order.setDueDate(date);
         save(order, maxId);
@@ -196,14 +193,8 @@ public class DataProviderCsv implements DataProvider {
 
     @Override
     public long save(Object model) {
-        long maxId = 0;
-        for (Long id : getAllIds()) {
-            if (id > maxId) {
-                maxId = id;
-            }
-        }
-        long id = maxId + 1;
-        return save(model, id);
+        long maxId = getAllIds().stream().reduce(Long::max).orElse((long) -1) + 1;
+        return save(model, maxId);
     }
 
     private long save(Object model, long id) {

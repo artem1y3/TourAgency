@@ -52,6 +52,25 @@ public class DataProviderXml implements DataProvider {
         dataSourcePath = Paths.get(root, filename + ".xml").toString();
     }
 
+    public void OrderTour(int idUser, int idTour, boolean isPro) {
+        Order order = new Order();
+        long maxId = getAllIds().stream().reduce(Long::max).orElse((long) -1) + 1;
+        order.setId(maxId);
+        order.setClientId(idUser);
+        order.setTourId(idTour);
+        order.setStatus(OrderStatus.SENT);
+        order.setPro(isPro);
+
+        java.util.Date date = new java.util.Date();
+        order.setDueDate(date);
+        save(order, maxId);
+        String message = "Заказ под номером '" + maxId + "'" + " тура '" + idTour + "' оформлен на пользователя с id: " + idUser + "'";
+        if (isPro) {
+            message += " со статусом PRO";
+        }
+        LOG.info(message);
+    }
+
     @Override
     public long save(Object model) {
         long maxId = 0;
