@@ -71,6 +71,152 @@ public class DataProviderXml implements DataProvider {
         LOG.info(message);
     }
 
+
+    public void bookHotel(int idTour, int idHotel) {
+        if (type == ModelType.TOUR) {
+            Tour tour = (Tour) getAll().stream().filter(obj -> getId(obj) == idTour).findFirst().orElse(null);
+            if (tour != null) {
+                tour.setHotel(idHotel);
+                update(tour);
+                String message = "Отель с id '" + idHotel + "' забронирован на тур с id '" + idTour + "'";
+                LOG.info(message);
+            } else {
+                LOG.info("Тур с id '" + idTour + "' не существует");
+            }
+        } else {
+            LOG.info("Неудачно");
+        }
+    }
+
+    public void updateTour(int idTour, int price, int dayCount, String name, String desc, Country country, String city) {
+        if (type == ModelType.TOUR) {
+            Tour tour = (Tour) getAll().stream().filter(obj -> getId(obj) == idTour).findFirst().orElse(null);
+
+            if (tour != null) {
+                tour.setName(name);
+                tour.setDescription(desc);
+                tour.setDayCount(dayCount);
+                tour.setCountry(country);
+                tour.setCity(city);
+                tour.setPrice(price);
+                update(tour);
+                String message = "Обновлены данные тура c id '" + idTour + "' на " + tour;
+                LOG.info(message);
+            } else {
+                LOG.info("Тур с id '" + idTour + "' не существует");
+            }
+        } else {
+            LOG.info("Неудачно");
+        }
+    }
+
+    public void deleteTour(int idTour) {
+        if (type == ModelType.TOUR) {
+            delete(idTour);
+            String message = "Тур с id '" + idTour + "' удален";
+            LOG.info(message);
+        } else {
+            LOG.info("Неудачно");
+        }
+    }
+
+    public void addTour(int price, int dayCount, String name, String desc, Country country, String city) {
+        if (type == ModelType.TOUR) {
+            Tour tour = new Tour();
+            long maxId = getAllIds().stream().reduce(Long::max).orElse((long) -1) + 1;
+
+            tour.setId(maxId);
+            tour.setHotel(0);
+            tour.setName(name);
+            tour.setDescription(desc);
+            tour.setDayCount(dayCount);
+            tour.setCountry(country);
+            tour.setCity(city);
+            tour.setPrice(price);
+            save(tour, maxId);
+            String message = "Добавлен тур '" + tour + "'";
+            LOG.info(message);
+        } else {
+            LOG.info("Неудачно");
+        }
+    }
+
+    public boolean validateColumns() throws IOException {
+        try {
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            // Load the input XML document, parse it and return an instance of the
+            // Document class.
+            Document document = builder.parse(dataSourcePath);
+            List<String[]> models = new ArrayList<>();
+            NodeList entityNodes = document.getDocumentElement().getElementsByTagName("list").item(0).getChildNodes();
+            for (int i = 0; i < entityNodes.getLength(); i++) {
+                Node entityNode = entityNodes.item(i);
+                if (entityNode.getNodeName().equals("object")){
+                    NodeList fieldsNodes = entityNode.getChildNodes();
+                    List<String> fields = new ArrayList<>();
+                    for (int j = 0; j < fieldsNodes.getLength(); j++) {
+                        Node fieldNode = fieldsNodes.item(j);
+                        if(fieldNode.getNodeType() == Node.ELEMENT_NODE){
+                            fields.add(fieldNode.getTextContent());
+                        }
+                    }
+                    models.add(fields.toArray(new String[fields.size()]));
+                }
+            }
+
+            for (int i = 0; i < models.size(); i++) {
+                if (!isLong(models.get(i)[0])) {
+                    LOG.info("[csv_" + type.toString() + ":" + (i + 1) + "]: id field should be long");
+                    throw new IOException();
+                }
+                for (int j = 0; j < models.get(i).length; j++) {
+                    if (models.get(i)[j] == null) {
+                        LOG.error("[csv_" + type.toString() + ":" + (i + 1) + "]: Attribute is empty at " + (j + 1) + " position");
+                        throw new IOException();
+                    }
+                }
+                switch (type) {
+                    case PRO_USER:
+                        if (models.get(i).length != 7) {
+                            LOG.error("[csv_" + type.toString() + ":" + (i + 1) + "]: Row has error");
+                            throw new IOException();
+                        }
+                        break;
+                    case SIMPLE_USER:
+                        if (models.get(i).length != 5) {
+                            LOG.error("[csv_" + type.toString() + ":" + (i + 1) + "]: Row has error");
+                            throw new IOException();
+                        }
+                        break;
+                    case ORDER:
+                        if (models.get(i).length != 6) {
+                            LOG.error("[csv_" + type.toString() + ":" + (i + 1) + "]: Row has error");
+                            throw new IOException();
+                        }
+                        break;
+                    case TOUR:
+                        if (models.get(i).length != 8) {
+                            LOG.error("[csv_" + type.toString() + ":" + (i + 1) + "]: Row has error");
+                            throw new IOException();
+                        }
+                        break;
+                    case HOTEL:
+                        if (models.get(i).length != 4) {
+                            LOG.error("[csv_" + type.toString() + ":" + (i + 1) + "]: Row has error");
+                            throw new IOException();
+                        }
+                        break;
+                }
+            }
+
+            return true;
+        } catch (ParserConfigurationException | IOException | SAXException e) {
+//            LOG.error(ex);
+            return false;
+        }
+    }
+
     @Override
     public long save(Object model) {
         long maxId = 0;
@@ -139,12 +285,7 @@ public class DataProviderXml implements DataProvider {
     @Override
     public Object getById(long id) {
         List<Object> all = getAll();
-        for(Object model : all) {
-            if(id == getId(model)){
-                return model;
-            }
-        }
-        return null;
+        return all.stream().filter(model -> id == getId(model)).findFirst().orElse(null);
     }
 
     @Override
@@ -154,11 +295,7 @@ public class DataProviderXml implements DataProvider {
         }
         List<Object> all = getAll();
         clear();
-        for (Object model : all){
-            if(id != getId(model)){
-                save(model, getId(model));
-            }
-        }
+        all.stream().filter(mod -> id != getId(mod)).forEach(mdl -> save(mdl, getId(mdl)));
     }
 
     private void clear() {

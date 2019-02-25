@@ -5,6 +5,7 @@ import ru.sfedu.touragency.api.DataProviderXml;
 import ru.sfedu.touragency.model.*;
 
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -109,12 +110,12 @@ public class DataProviderXmlTest {
         hotels.stream().forEach(item -> item.setId(hotelDataProviderXml.save(item)));
 
 
-        System.out.println("saveAndGetAll");
-        clients.forEach(item -> System.out.println(item));
-        proClients.forEach(item -> System.out.println(item));
-        orders.forEach(item -> System.out.println(item));
-        tours.forEach(item -> System.out.println(item));
-        hotels.forEach(item -> System.out.println(item));
+//        System.out.println("saveAndGetAll");
+//        clients.forEach(item -> System.out.println(item));
+//        proClients.forEach(item -> System.out.println(item));
+//        orders.forEach(item -> System.out.println(item));
+//        tours.forEach(item -> System.out.println(item));
+//        hotels.forEach(item -> System.out.println(item));
 
         // Считываем записанные данные и смотрим contains
         clientDataProviderXml.getAll().stream().forEach(item -> {
@@ -165,12 +166,19 @@ public class DataProviderXmlTest {
     }
 
     @Test
-    public void c_validate(){
-        clientDataProviderXml.validate();
-        proClientDataProviderXml.validate();
-        orderDataProviderXml.validate();
-        tourDataProviderXml.validate();
-        hotelDataProviderXml.validate();
+    public void c_validate() throws IOException {
+        if (
+                clientDataProviderXml.validateColumns() &
+                proClientDataProviderXml.validateColumns() &
+                orderDataProviderXml.validateColumns() &
+                tourDataProviderXml.validateColumns() &
+                hotelDataProviderXml.validateColumns()) {
+            clientDataProviderXml.validate();
+            proClientDataProviderXml.validate();
+            tourDataProviderXml.validate();
+            hotelDataProviderXml.validate();
+            orderDataProviderXml.validate();
+        }
     }
 
     @Test
@@ -197,21 +205,11 @@ public class DataProviderXmlTest {
         List<Tour> toursCheck = new ArrayList<>();
         List<Hotel> hotelsCheck = new ArrayList<>();
 
-        for (Object obj : clientDataProviderXml.getAll()) {
-            clientsCheck.add((Client) obj);
-        }
-        for (Object obj : proClientDataProviderXml.getAll()) {
-            proClientsCheck.add((ProClient) obj);
-        }
-        for (Object obj : orderDataProviderXml.getAll()) {
-            ordersCheck.add((Order) obj);
-        }
-        for (Object obj : tourDataProviderXml.getAll()) {
-            toursCheck.add((Tour) obj);
-        }
-        for (Object obj : hotelDataProviderXml.getAll()) {
-            hotelsCheck.add((Hotel) obj);
-        }
+        clientDataProviderXml.getAll().forEach(obj -> clientsCheck.add((Client) obj));
+        proClientDataProviderXml.getAll().forEach(obj -> proClientsCheck.add((ProClient) obj));
+        orderDataProviderXml.getAll().forEach(obj -> ordersCheck.add((Order) obj));
+        tourDataProviderXml.getAll().forEach(obj -> toursCheck.add((Tour) obj));
+        hotelDataProviderXml.getAll().forEach(obj -> hotelsCheck.add((Hotel) obj));
 
 
         assertEquals(clients, clientsCheck);
@@ -222,21 +220,11 @@ public class DataProviderXmlTest {
     }
     @Test
     public void z_clearall(){
-        for (Object obj : clientDataProviderXml.getAll()) {
-            clientDataProviderXml.delete(((Client) obj).getId());
-        }
-        for (Object obj : proClientDataProviderXml.getAll()) {
-            proClientDataProviderXml.delete(((ProClient) obj).getId());
-        }
-        for (Object obj : orderDataProviderXml.getAll()) {
-            orderDataProviderXml.delete(((Order) obj).getId());
-        }
-        for (Object obj : tourDataProviderXml.getAll()) {
-            tourDataProviderXml.delete(((Tour) obj).getId());
-        }
-        for (Object obj : hotelDataProviderXml.getAll()) {
-            hotelDataProviderXml.delete(((Hotel) obj).getId());
-        }
+        clientDataProviderXml.getAll().forEach(obj -> clientDataProviderXml.delete(((Client) obj).getId()));
+        proClientDataProviderXml.getAll().forEach(obj -> proClientDataProviderXml.delete(((ProClient) obj).getId()));
+        orderDataProviderXml.getAll().forEach(obj -> orderDataProviderXml.delete(((Order) obj).getId()));
+        tourDataProviderXml.getAll().forEach(obj -> tourDataProviderXml.delete(((Tour) obj).getId()));
+        hotelDataProviderXml.getAll().forEach(obj -> hotelDataProviderXml.delete(((Hotel) obj).getId()));
     }
 
 
@@ -245,6 +233,30 @@ public class DataProviderXmlTest {
 //        DataProviderXml data = new DataProviderXml(ModelType.ORDER);
 //        data.OrderTour(1, 1, false);
 ////        data.OrderTour(1,1, true);
+//    }
+
+//    @Test
+//    public void bookHotel() {
+//        DataProviderCsv data = new DataProviderCsv(ModelType.TOUR);
+//        data.bookHotel(1,2);
+//    }
+//
+//    @Test
+//    public void updateTour() {
+//        DataProviderCsv data = new DataProviderCsv(ModelType.TOUR);
+//        data.updateTour(1,10000,30, "testName", "testDesc", Country.RUSSIA, "testCity");
+//    }
+//
+//    @Test
+//    public void deleteTour() {
+//        DataProviderCsv data = new DataProviderCsv(ModelType.TOUR);
+//        data.deleteTour(1);
+//    }
+//
+//    @Test
+//    public void addTour() {
+//        DataProviderCsv data = new DataProviderCsv(ModelType.TOUR);
+//        data.addTour(10000,30, "testName", "testDesc", Country.RUSSIA, "testCity");
 //    }
 
 

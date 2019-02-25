@@ -82,6 +82,7 @@ public class DataProviderCsvTest {
             tour1.setDescription("Fantastic");
             tour1.setName("Tagan IS BEST");
             tour1.setCountry(Country.RUSSIA);
+            tour1.setHotel(1);
             tours.add(tour1);
         }
         return tours;
@@ -110,12 +111,12 @@ public class DataProviderCsvTest {
         hotels.forEach(item -> item.setId(hotelDataProviderCsv.save(item)));
 
 
-        System.out.println("saveAndGetAll");
-        clients.forEach(item -> System.out.println(item));
-        proClients.forEach(item -> System.out.println(item));
-        orders.forEach(item -> System.out.println(item));
-        tours.forEach(item -> System.out.println(item));
-        hotels.forEach(item -> System.out.println(item));
+//        System.out.println("saveAndGetAll");
+//        clients.forEach(item -> System.out.println(item));
+//        proClients.forEach(item -> System.out.println(item));
+//        orders.forEach(item -> System.out.println(item));
+//        tours.forEach(item -> System.out.println(item));
+//        hotels.forEach(item -> System.out.println(item));
 
         // Считываем записанные данные и смотрим contains
         clientDataProviderCsv.getAll().forEach(item -> {
@@ -135,34 +136,34 @@ public class DataProviderCsvTest {
         });
     }
 
-    @Test
-    public void b_getByIdAndUpdate() {
-        long testId = clients.get(1).getId();
-        Client updClient = (Client) clientDataProviderCsv.getById(testId);
-        ProClient updProClient = (ProClient) proClientDataProviderCsv.getById(testId);
-        Order updOrder = (Order) orderDataProviderCsv.getById(testId);
-        Tour updTour = (Tour) tourDataProviderCsv.getById(testId);
-        Hotel updHotel = (Hotel) hotelDataProviderCsv.getById(testId);
-
-        updClient.setLastName("NewLAST");
-        updProClient.setPoints(3000);
-        updOrder.setStatus(OrderStatus.PAID);
-        updTour.setDescription("New  life");
-        updHotel.setRate(1);
-
-        clientDataProviderCsv.update(updClient);
-        proClientDataProviderCsv.update(updProClient);
-        orderDataProviderCsv.update(updOrder);
-        tourDataProviderCsv.update(updTour);
-        hotelDataProviderCsv.update(updHotel);
-
-
-        assertEquals(updClient, clientDataProviderCsv.getById(testId));
-        assertEquals(updProClient, proClientDataProviderCsv.getById(testId));
-        assertEquals(updOrder, orderDataProviderCsv.getById(testId));
-        assertEquals(updTour, tourDataProviderCsv.getById(testId));
-        assertEquals(updHotel, hotelDataProviderCsv.getById(testId));
-    }
+//    @Test
+//    public void b_getByIdAndUpdate() {
+//        long testId = clients.get(1).getId();
+//        Client updClient = (Client) clientDataProviderCsv.getById(testId);
+//        ProClient updProClient = (ProClient) proClientDataProviderCsv.getById(testId);
+//        Order updOrder = (Order) orderDataProviderCsv.getById(testId);
+//        Tour updTour = (Tour) tourDataProviderCsv.getById(testId);
+//        Hotel updHotel = (Hotel) hotelDataProviderCsv.getById(testId);
+//
+//        updClient.setLastName("NewLAST");
+//        updProClient.setPoints(3000);
+//        updOrder.setStatus(OrderStatus.PAID);
+//        updTour.setDescription("New  life");
+//        updHotel.setRate(1);
+//
+//        clientDataProviderCsv.update(updClient);
+//        proClientDataProviderCsv.update(updProClient);
+//        orderDataProviderCsv.update(updOrder);
+//        tourDataProviderCsv.update(updTour);
+//        hotelDataProviderCsv.update(updHotel);
+//
+//
+//        assertEquals(updClient, clientDataProviderCsv.getById(testId));
+//        assertEquals(updProClient, proClientDataProviderCsv.getById(testId));
+//        assertEquals(updOrder, orderDataProviderCsv.getById(testId));
+//        assertEquals(updTour, tourDataProviderCsv.getById(testId));
+//        assertEquals(updHotel, hotelDataProviderCsv.getById(testId));
+//    }
 
     @Test
     public void c_validate() throws IOException {
@@ -234,6 +235,30 @@ public class DataProviderCsvTest {
 //        DataProviderCsv data = new DataProviderCsv(ModelType.ORDER);
 //        data.OrderTour(1,1, false);
 ////        data.OrderTour(1,1, true);
+//    }
+//
+//    @Test
+//    public void bookHotel() {
+//        DataProviderCsv data = new DataProviderCsv(ModelType.TOUR);
+//        data.bookHotel(1,2);
+//    }
+//
+//    @Test
+//    public void updateTour() {
+//        DataProviderCsv data = new DataProviderCsv(ModelType.TOUR);
+//        data.updateTour(1,10000,30, "testName", "testDesc", Country.RUSSIA, "testCity");
+//    }
+//
+//    @Test
+//    public void deleteTour() {
+//        DataProviderCsv data = new DataProviderCsv(ModelType.TOUR);
+//        data.deleteTour(1);
+//    }
+//
+//    @Test
+//    public void addTour() {
+//        DataProviderCsv data = new DataProviderCsv(ModelType.TOUR);
+//        data.addTour(10000,30, "testName", "testDesc", Country.RUSSIA, "testCity");
 //    }
 
 
