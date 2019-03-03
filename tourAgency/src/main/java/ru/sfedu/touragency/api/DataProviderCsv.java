@@ -29,7 +29,7 @@ public class DataProviderCsv implements DataProvider {
 
     public void OrderTour(int idUser, int idTour, boolean isPro) {
         Order order = new Order();
-        long maxId = getAllIds().stream().reduce(Long::max).orElse((long) -1) + 1;
+        long maxId = getAllIds().stream().reduce(Long::max).orElse((long) 0) + 1;
         order.setId(maxId);
         order.setClientId(idUser);
         order.setTourId(idTour);
@@ -109,7 +109,7 @@ public class DataProviderCsv implements DataProvider {
     public void addTour(int price, int dayCount, String name, String desc, Country country, String city) {
         if (type == ModelType.TOUR) {
             Tour tour = new Tour();
-            long maxId = getAllIds().stream().reduce(Long::max).orElse((long) -1) + 1;
+            long maxId = getAllIds().stream().reduce(Long::max).orElse((long) 0) + 1;
 
             tour.setId(maxId);
             tour.setHotel(0);
@@ -307,7 +307,7 @@ public class DataProviderCsv implements DataProvider {
     public void update(Object model) {
         long id = getId(model);
         if (getById(id) == null) {
-            return;
+            throw new NullPointerException("Id not found");
         }
         delete(id);
         save(model, id);
@@ -381,7 +381,7 @@ public class DataProviderCsv implements DataProvider {
     @Override
     public void delete(long id) {
         if (getById(id) == null) {
-            return;
+            throw new NullPointerException("Id not found");
         }
         List<Object> all = getAll();
         clear();

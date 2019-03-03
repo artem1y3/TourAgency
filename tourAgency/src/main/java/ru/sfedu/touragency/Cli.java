@@ -26,10 +26,10 @@ public class Cli {
         }
     }
 
-    private static String[] actions = {"save", "update","print_all", "select", "delete", "exit"};
+    private static String[] actions = {"save", "update","print_all", "select", "delete", "use_case", "exit"};
     private static String getAction(){
         while (true){
-            LOG.info("Choose action (" + String.join(",", actions) + "):");
+            LOG.info("Choose action (" + String.join(", ", actions) + "):");
             String input = sc.nextLine().toLowerCase();
             if(Arrays.asList(actions).contains(input)){
                 return input;
@@ -40,11 +40,17 @@ public class Cli {
 
     private static String[] modelTypes; // set in initCli
 
-    private static ModelType getModelType(){
+    private static ModelType getModelType(boolean isUseCase){
+        String types[];
+        if (isUseCase) {
+            types = new String[]{String.valueOf(ModelType.TOUR), String.valueOf(ModelType.ORDER)};
+        } else {
+            types = modelTypes;
+        }
         while (true){
-            LOG.info("Choose model (" + String.join(",", modelTypes) + "):");
+            LOG.info("Choose model (" + String.join(", ", types) + "):");
             String input = sc.nextLine();
-            if(Arrays.asList(modelTypes).contains(input)){
+            if(Arrays.asList(types).contains(input)){
                 return ModelType.valueOf(input);
             }
             LOG.info("Wrong model: '" + input + "'");
@@ -70,9 +76,13 @@ public class Cli {
                 LOG.info("Bye!");
                 return;
             }
-
             DataProvider provider = null;
-            ModelType modelType = getModelType();
+            ModelType modelType;
+            if (action.equals("use_case")) {
+                modelType = getModelType(true);
+            } else {
+                modelType = getModelType(false);
+            }
             switch (dsType){
                 case "csv":
                     provider = new DataProviderCsv(modelType);
@@ -169,6 +179,55 @@ public class Cli {
                         LOG.info(model.toString());
                     }
                     break;
+                case "use_case":
+                    try {
+                        String chosenMethod;
+                        String methodsOfTours[] = {"add_tour", "book_hotel", "update_tour", "delete_tour"};
+                        String methodsOfOrders[] = {"order_tour"};
+                        String message;
+                        if (modelType.equals(ModelType.TOUR)) {
+                            message = String.join(", ", methodsOfTours);
+                        } else {
+                            message = String.join(", ", methodsOfOrders);
+                        }
+                        while (true) {
+                            LOG.info("Select method of use_case (" + message + "):");
+                            chosenMethod = sc.nextLine();
+                            switch (chosenMethod) {
+                                case "add_tour":
+                                    Tour tour = getTour(false);
+                                    id = provider.save(tour);
+                                    LOG.info("Tour was saved, id: " + id);
+                                    break;
+                                case "book_hotel":
+                                    bookHotel();
+                                    break;
+                                case "order_tour":
+                                    orderTour();
+                                    break;
+                                case "update_tour":
+                                    Tour updatedTour = getTour(true);
+                                    provider.update(updatedTour);
+                                    LOG.info("Tour was updated, id: " + updatedTour.getId());
+                                    break;
+                                case "delete_tour":
+                                    LOG.info("Input id:");
+                                    long deleteId = sc.nextInt();
+                                    sc.nextLine();
+                                    provider.delete(deleteId);
+                                    LOG.info("Model deleted: " + deleteId);
+                                    break;
+                                default:
+                                    LOG.info("Wrong method of use_case: '" + chosenMethod + "'");
+                                    continue;
+                            }
+                            break;
+                        }
+                        break;
+                    } catch (Exception ex) {
+                        LOG.error(ex);
+                        continue;
+                    }
                 case "delete":
                     LOG.info("Input id:");
                     long deleteId = sc.nextInt();
@@ -271,6 +330,61 @@ public class Cli {
                 continue;
             }
             return (Order) DataProviderCsv.stringArrayToModel(arr, ModelType.ORDER);
+        }
+    }
+
+    private static void orderTour() {
+        DataProviderCsv data = new DataProviderCsv(ModelType.ORDER);
+        int paramsCount;
+        while (true) {
+            LOG.info("Input comma-separated idUser, idTour, isPro");
+            paramsCount = 3;
+            String[] arr = sc.nextLine().split(",");
+            int idUser, idTour;
+            boolean isPro;
+            if(arr.length != paramsCount){
+                LOG.info("Wrong count of params");
+                continue;
+            }
+            for (int i = 0; i < arr.length; i++) {
+                arr[i] = arr[i].trim();
+            }
+            idUser = Integer.parseInt(arr[0]);
+            idTour = Integer.parseInt(arr[1]);
+            switch (arr[2].toLowerCase()) {
+                case "true":
+                    isPro = true;
+                    break;
+                case "false":
+                    isPro = false;
+                    break;
+                default:
+                    LOG.info("Wrong isPro status");
+                    continue;
+            }
+            data.OrderTour(idUser,idTour, isPro);
+            break;
+        }
+    }
+    private static void bookHotel() {
+        DataProviderCsv data = new DataProviderCsv(ModelType.TOUR);
+        int paramsCount;
+        while (true) {
+            LOG.info("Input comma-separated idTour, idHotel");
+            paramsCount = 2;
+            String[] arr = sc.nextLine().split(",");
+            int idHotel, idTour;
+            if(arr.length != paramsCount){
+                LOG.info("Wrong count of params");
+                continue;
+            }
+            for (int i = 0; i < arr.length; i++) {
+                arr[i] = arr[i].trim();
+            }
+            idTour = Integer.parseInt(arr[0]);
+            idHotel = Integer.parseInt(arr[1]);
+            data.bookHotel(idTour,idHotel);
+            break;
         }
     }
     
