@@ -37,7 +37,18 @@ public class DataProviderCsv implements DataProvider {
         order.setPro(isPro);
 
         java.util.Date date = new java.util.Date();
-        order.setDueDate(date);
+
+
+        SimpleDateFormat formater = null;
+        try {
+            formater = new SimpleDateFormat(ConfigurationUtil.getConfigurationEntry(Constants.DATE_FORMAT));
+            order.setDueDate(Date.valueOf(LocalDate.parse(formater.format(date), DateTimeFormatter.ofPattern(ConfigurationUtil.getConfigurationEntry(Constants.DATE_FORMAT)))));
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+//                SimpleDateFormat formater = new SimpleDateFormat("dd.MM.yyyy");
+
         save(order, maxId);
         String message = "Заказ под номером '" + maxId + "'" + " тура '" + idTour + "' оформлен на пользователя с id: " + idUser + "'";
         if (isPro) {

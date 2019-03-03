@@ -136,43 +136,43 @@ public class DataProviderCsvTest {
         });
     }
 
-//    @Test
-//    public void b_getByIdAndUpdate() {
-//        long testId = clients.get(1).getId();
-//        Client updClient = (Client) clientDataProviderCsv.getById(testId);
-//        ProClient updProClient = (ProClient) proClientDataProviderCsv.getById(testId);
-//        Order updOrder = (Order) orderDataProviderCsv.getById(testId);
-//        Tour updTour = (Tour) tourDataProviderCsv.getById(testId);
-//        Hotel updHotel = (Hotel) hotelDataProviderCsv.getById(testId);
-//
-//        updClient.setLastName("NewLAST");
-//        updProClient.setPoints(3000);
-//        updOrder.setStatus(OrderStatus.PAID);
-//        updTour.setDescription("New  life");
-//        updHotel.setRate(1);
-//
-//        clientDataProviderCsv.update(updClient);
-//        proClientDataProviderCsv.update(updProClient);
-//        orderDataProviderCsv.update(updOrder);
-//        tourDataProviderCsv.update(updTour);
-//        hotelDataProviderCsv.update(updHotel);
-//
-//
-//        assertEquals(updClient, clientDataProviderCsv.getById(testId));
-//        assertEquals(updProClient, proClientDataProviderCsv.getById(testId));
-//        assertEquals(updOrder, orderDataProviderCsv.getById(testId));
-//        assertEquals(updTour, tourDataProviderCsv.getById(testId));
-//        assertEquals(updHotel, hotelDataProviderCsv.getById(testId));
-//    }
+    @Test
+    public void b_getByIdAndUpdate() {
+        long testId = clients.get(1).getId();
+        Client updClient = (Client) clientDataProviderCsv.getById(testId);
+        ProClient updProClient = (ProClient) proClientDataProviderCsv.getById(testId);
+        Order updOrder = (Order) orderDataProviderCsv.getById(testId);
+        Tour updTour = (Tour) tourDataProviderCsv.getById(testId);
+        Hotel updHotel = (Hotel) hotelDataProviderCsv.getById(testId);
+
+        updClient.setLastName("NewLAST");
+        updProClient.setPoints(3000);
+        updOrder.setStatus(OrderStatus.PAID);
+        updTour.setDescription("New  life");
+        updHotel.setRate(1);
+
+        clientDataProviderCsv.update(updClient);
+        proClientDataProviderCsv.update(updProClient);
+        orderDataProviderCsv.update(updOrder);
+        tourDataProviderCsv.update(updTour);
+        hotelDataProviderCsv.update(updHotel);
+
+
+        assertEquals(updClient, clientDataProviderCsv.getById(testId));
+        assertEquals(updProClient, proClientDataProviderCsv.getById(testId));
+        assertEquals(updOrder, orderDataProviderCsv.getById(testId));
+        assertEquals(updTour, tourDataProviderCsv.getById(testId));
+        assertEquals(updHotel, hotelDataProviderCsv.getById(testId));
+    }
 
     @Test
     public void c_validate() throws IOException {
         if (
-                clientDataProviderCsv.validateColumns() &
-                        proClientDataProviderCsv.validateColumns() &
+                clientDataProviderCsv.validateColumns() & proClientDataProviderCsv.validateColumns() &
                         orderDataProviderCsv.validateColumns() &
                         tourDataProviderCsv.validateColumns() &
-                        hotelDataProviderCsv.validateColumns()) {
+                        hotelDataProviderCsv.validateColumns()
+        ) {
             clientDataProviderCsv.validate();
             proClientDataProviderCsv.validate();
             tourDataProviderCsv.validate();
@@ -181,8 +181,44 @@ public class DataProviderCsvTest {
         }
     }
 
+
+
+
     @Test
-    public void d_delete() {
+    public void y_a_addTour() {
+        DataProviderCsv data = new DataProviderCsv(ModelType.TOUR);
+        data.addTour(10000,30, "testName", "testDesc", Country.RUSSIA, "testCity");
+    }
+
+
+    @Test
+    public void y_b_orderTour() {
+        DataProviderCsv data = new DataProviderCsv(ModelType.ORDER);
+        data.OrderTour(1,1, false);
+//        data.OrderTour(1,1, true);
+    }
+
+    @Test
+    public void y_c_bookHotel() {
+        DataProviderCsv data = new DataProviderCsv(ModelType.TOUR);
+        data.bookHotel(1,2);
+    }
+
+    @Test
+    public void y_d_updateTour() {
+        DataProviderCsv data = new DataProviderCsv(ModelType.TOUR);
+        data.updateTour(1,10000,30, "testName", "testDesc", Country.RUSSIA, "testCity");
+    }
+
+    @Test
+    public void y_e_deleteTour() {
+        DataProviderCsv data = new DataProviderCsv(ModelType.TOUR);
+        data.deleteTour(1);
+    }
+
+
+    @Test
+    public void e_delete() {
         long testId = clients.get(1).getId();
         clientDataProviderCsv.delete(testId);
         proClientDataProviderCsv.delete(testId);
@@ -220,6 +256,10 @@ public class DataProviderCsvTest {
         assertEquals(hotels, hotelsCheck);
     }
 
+
+
+
+
     @Test
     public void z_clearall() {
         clientDataProviderCsv.getAll().forEach(obj -> clientDataProviderCsv.delete(((Client) obj).getId()));
@@ -228,38 +268,6 @@ public class DataProviderCsvTest {
         tourDataProviderCsv.getAll().forEach(obj -> tourDataProviderCsv.delete(((Tour) obj).getId()));
         hotelDataProviderCsv.getAll().forEach(obj -> hotelDataProviderCsv.delete(((Hotel) obj).getId()));
     }
-
-
-//    @Test
-//    public void orderTour() {
-//        DataProviderCsv data = new DataProviderCsv(ModelType.ORDER);
-//        data.OrderTour(1,1, false);
-////        data.OrderTour(1,1, true);
-//    }
-//
-//    @Test
-//    public void bookHotel() {
-//        DataProviderCsv data = new DataProviderCsv(ModelType.TOUR);
-//        data.bookHotel(1,2);
-//    }
-//
-//    @Test
-//    public void updateTour() {
-//        DataProviderCsv data = new DataProviderCsv(ModelType.TOUR);
-//        data.updateTour(1,10000,30, "testName", "testDesc", Country.RUSSIA, "testCity");
-//    }
-//
-//    @Test
-//    public void deleteTour() {
-//        DataProviderCsv data = new DataProviderCsv(ModelType.TOUR);
-//        data.deleteTour(1);
-//    }
-//
-//    @Test
-//    public void addTour() {
-//        DataProviderCsv data = new DataProviderCsv(ModelType.TOUR);
-//        data.addTour(10000,30, "testName", "testDesc", Country.RUSSIA, "testCity");
-//    }
 
 
 }
