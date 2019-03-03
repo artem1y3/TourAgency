@@ -47,12 +47,11 @@ public class DataProviderCsv implements DataProvider {
         } catch (IOException e) {
             e.printStackTrace();
         }
-//                SimpleDateFormat formater = new SimpleDateFormat("dd.MM.yyyy");
 
         save(order, maxId);
-        String message = "Заказ под номером '" + maxId + "'" + " тура '" + idTour + "' оформлен на пользователя с id: " + idUser + "'";
+        String message = "Order (id='" + maxId + "')" + " of Tour (id='" + idTour + "') placed by user (id='" + idUser + "')";
         if (isPro) {
-            message += " со статусом PRO";
+            message += " with PRO status";
         }
         LOG.info(message);
     }
@@ -64,13 +63,13 @@ public class DataProviderCsv implements DataProvider {
             if (tour != null) {
                 tour.setHotel(idHotel);
                 update(tour);
-                String message = "Отель с id '" + idHotel + "' забронирован на тур с id '" + idTour + "'";
+                String message = "Hotel (id='" + idHotel + "') booked on tour (id='" + idTour + "')";
                 LOG.info(message);
             } else {
-                LOG.info("Тур с id '" + idTour + "' не существует");
+                LOG.info("Tour (id='" + idTour + "') does not exist");
             }
         } else {
-            LOG.info("Неудачно");
+            LOG.info("Failed book");
         }
     }
 
@@ -86,23 +85,23 @@ public class DataProviderCsv implements DataProvider {
                 tour.setCity(city);
                 tour.setPrice(price);
                 update(tour);
-                String message = "Обновлены данные тура c id '" + idTour + "' на " + tour;
+                String message = "Updated tour data (id='" + idTour + "') to " + tour;
                 LOG.info(message);
             } else {
-                LOG.info("Тур с id '" + idTour + "' не существует");
+                LOG.info("Tour (id='" + idTour + "') does not exist");
             }
         } else {
-            LOG.info("Неудачно");
+            LOG.info("Failed update");
         }
     }
 
     public void deleteTour(int idTour) {
         if (type == ModelType.TOUR) {
             delete(idTour);
-            String message = "Тур с id '" + idTour + "' удален";
+            String message = "Tour (id='" + idTour + "') deleted";
             LOG.info(message);
         } else {
-            LOG.info("Неудачно");
+            LOG.info("Failed deleted tour");
         }
     }
 
@@ -120,10 +119,10 @@ public class DataProviderCsv implements DataProvider {
             tour.setCity(city);
             tour.setPrice(price);
             save(tour, maxId);
-            String message = "Добавлен тур '" + tour + "'";
+            String message = "Added tour '" + tour + "'";
             LOG.info(message);
         } else {
-            LOG.info("Неудачно");
+            LOG.info("Failed add tour");
         }
     }
 
@@ -330,20 +329,9 @@ public class DataProviderCsv implements DataProvider {
         }
     }
 
-    //    private List<Long> getAllIds() {
-//        List<Object> all = getAll();
-//        List<Long> ids = new ArrayList<>();
-//        for (Object model : all) {
-//            ids.add(getId(model));
-//        }
-//        return ids;
-//    }
     private List<Long> getAllIds() {
         List<Object> all = getAll();
         List<Long> ids;
-//        for (Object model : all) {
-//            ids.add(getId(model));
-//        }
         ids = all.stream().map(item -> getId(item)).collect(Collectors.toList());
         return ids;
     }
@@ -359,11 +347,8 @@ public class DataProviderCsv implements DataProvider {
         char ch = str.charAt(0);
         try (Reader fileReader = new FileReader(dataSourcePath);
              CSVReader reader = new CSVReader(fileReader, ch)) {
-            List<Object> models = new ArrayList<>();
+            List<Object> models;
             List<String[]> result = reader.readAll();
-//            for (String[] row : result) {
-//                models.add(stringArrayToModel(row, type));
-//            }
             models = result.stream().map(item -> stringArrayToModel(item, type)).collect(Collectors.toList());
             return models;
         } catch (IOException ex) {
@@ -453,7 +438,6 @@ public class DataProviderCsv implements DataProvider {
                                      .build()
                      )
                      .build()) {
-//             CSVReader reader = new CSVReader(fileReader, ch)) {
 
             List<String[]> models = reader.readAll();
             for (int i = 0; i < models.size(); i++) {
@@ -526,9 +510,6 @@ public class DataProviderCsv implements DataProvider {
                         .build()
         ) {
             List<String[]> models = reader.readAll();
-
-//            boolean noEmpty = true;
-
             for (int i = 0; i < models.size(); i++) {
                 for (int j = i + 1; j < models.size(); j++) {
                     if (Long.parseLong(models.get(i)[0]) == Long.parseLong(models.get(j)[0])) {

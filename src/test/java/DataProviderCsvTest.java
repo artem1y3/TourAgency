@@ -218,7 +218,7 @@ public class DataProviderCsvTest {
 
 
     @Test
-    public void e_delete() {
+    public void d_delete() {
         long testId = clients.get(1).getId();
         clientDataProviderCsv.delete(testId);
         proClientDataProviderCsv.delete(testId);

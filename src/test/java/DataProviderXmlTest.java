@@ -228,36 +228,36 @@ public class DataProviderXmlTest {
     }
 
 
-//    @Test
-//    public void orderTour() {
-//        DataProviderXml data = new DataProviderXml(ModelType.ORDER);
-//        data.OrderTour(1, 1, false);
-////        data.OrderTour(1,1, true);
-//    }
+    @Test
+    public void y_a_orderTour() {
+        DataProviderXml data = new DataProviderXml(ModelType.ORDER);
+        data.OrderTour(1, 1, false);
+//        data.OrderTour(1,1, true);
+    }
 
-//    @Test
-//    public void bookHotel() {
-//        DataProviderCsv data = new DataProviderCsv(ModelType.TOUR);
-//        data.bookHotel(1,2);
-//    }
-//
-//    @Test
-//    public void updateTour() {
-//        DataProviderCsv data = new DataProviderCsv(ModelType.TOUR);
-//        data.updateTour(1,10000,30, "testName", "testDesc", Country.RUSSIA, "testCity");
-//    }
-//
-//    @Test
-//    public void deleteTour() {
-//        DataProviderCsv data = new DataProviderCsv(ModelType.TOUR);
-//        data.deleteTour(1);
-//    }
-//
-//    @Test
-//    public void addTour() {
-//        DataProviderCsv data = new DataProviderCsv(ModelType.TOUR);
-//        data.addTour(10000,30, "testName", "testDesc", Country.RUSSIA, "testCity");
-//    }
+    @Test
+    public void y_b_bookHotel() {
+        DataProviderXml data = new DataProviderXml(ModelType.TOUR);
+        data.bookHotel(1,2);
+    }
+
+    @Test
+    public void y_c_updateTour() {
+        DataProviderXml data = new DataProviderXml(ModelType.TOUR);
+        data.updateTour(1,10000,30, "testName", "testDesc", Country.RUSSIA, "testCity");
+    }
+
+    @Test
+    public void y_d_deleteTour() {
+        DataProviderXml data = new DataProviderXml(ModelType.TOUR);
+        data.deleteTour(1);
+    }
+
+    @Test
+    public void y_e_addTour() {
+        DataProviderXml data = new DataProviderXml(ModelType.TOUR);
+        data.addTour(10000,30, "testName", "testDesc", Country.RUSSIA, "testCity");
+    }
 
 
 }

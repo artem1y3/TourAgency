@@ -200,10 +200,10 @@ public class Cli {
                                     LOG.info("Tour was saved, id: " + id);
                                     break;
                                 case "book_hotel":
-                                    bookHotel();
+                                    bookHotel(dsType);
                                     break;
                                 case "order_tour":
-                                    orderTour();
+                                    orderTour(dsType);
                                     break;
                                 case "update_tour":
                                     Tour updatedTour = getTour(true);
@@ -300,10 +300,10 @@ public class Cli {
         while (true) {
             int paramsCount;
             if (update) {
-                LOG.info("Input comma-separated id, clientId, tourId, status (SENT or PAID), date (DD.MM.YYYY)");
+                LOG.info("Input comma-separated id, clientId, tourId, status (SENT or PAID), date (DD.MM.YYYY), isPro (true or false)");
                 paramsCount = 6;
             } else {
-                LOG.info("Input comma-separated clientId, tourId, status (SENT or PAID), date (DD.MM.YYYY)");
+                LOG.info("Input comma-separated clientId, tourId, status (SENT or PAID), date (DD.MM.YYYY), isPro (true or false)");
                 paramsCount = 5;
             }
             String[] arr = sc.nextLine().split(",");
@@ -333,58 +333,170 @@ public class Cli {
         }
     }
 
-    private static void orderTour() {
-        DataProviderCsv data = new DataProviderCsv(ModelType.ORDER);
+    private static void orderTour(String dsType) {
         int paramsCount;
-        while (true) {
-            LOG.info("Input comma-separated idUser, idTour, isPro");
-            paramsCount = 3;
-            String[] arr = sc.nextLine().split(",");
-            int idUser, idTour;
-            boolean isPro;
-            if(arr.length != paramsCount){
-                LOG.info("Wrong count of params");
-                continue;
-            }
-            for (int i = 0; i < arr.length; i++) {
-                arr[i] = arr[i].trim();
-            }
-            idUser = Integer.parseInt(arr[0]);
-            idTour = Integer.parseInt(arr[1]);
-            switch (arr[2].toLowerCase()) {
-                case "true":
-                    isPro = true;
+        switch (dsType) {
+            case "csv":
+                DataProviderCsv data = new DataProviderCsv(ModelType.ORDER);
+                while (true) {
+                    LOG.info("Input comma-separated idUser, idTour, isPro");
+                    paramsCount = 3;
+                    String[] arr = sc.nextLine().split(",");
+                    int idUser, idTour;
+                    boolean isPro;
+                    if(arr.length != paramsCount){
+                        LOG.info("Wrong count of params");
+                        continue;
+                    }
+                    for (int i = 0; i < arr.length; i++) {
+                        arr[i] = arr[i].trim();
+                    }
+                    idUser = Integer.parseInt(arr[0]);
+                    idTour = Integer.parseInt(arr[1]);
+                    switch (arr[2].toLowerCase()) {
+                        case "true":
+                            isPro = true;
+                            break;
+                        case "false":
+                            isPro = false;
+                            break;
+                        default:
+                            LOG.info("Wrong isPro status");
+                            continue;
+                    }
+                    data.OrderTour(idUser,idTour, isPro);
                     break;
-                case "false":
-                    isPro = false;
+                }
+                break;
+            case "xml":
+                DataProviderXml dataXml = new DataProviderXml(ModelType.ORDER);
+                while (true) {
+                    LOG.info("Input comma-separated idUser, idTour, isPro");
+                    paramsCount = 3;
+                    String[] arr = sc.nextLine().split(",");
+                    int idUser, idTour;
+                    boolean isPro;
+                    if(arr.length != paramsCount){
+                        LOG.info("Wrong count of params");
+                        continue;
+                    }
+                    for (int i = 0; i < arr.length; i++) {
+                        arr[i] = arr[i].trim();
+                    }
+                    idUser = Integer.parseInt(arr[0]);
+                    idTour = Integer.parseInt(arr[1]);
+                    switch (arr[2].toLowerCase()) {
+                        case "true":
+                            isPro = true;
+                            break;
+                        case "false":
+                            isPro = false;
+                            break;
+                        default:
+                            LOG.info("Wrong isPro status");
+                            continue;
+                    }
+                    dataXml.OrderTour(idUser,idTour, isPro);
                     break;
-                default:
-                    LOG.info("Wrong isPro status");
-                    continue;
-            }
-            data.OrderTour(idUser,idTour, isPro);
-            break;
+                }
+                break;
+            case "jdbc":
+                DataProviderJdbc dataJdbc = new DataProviderJdbc(ModelType.ORDER);
+                while (true) {
+                    LOG.info("Input comma-separated idUser, idTour, isPro");
+                    paramsCount = 3;
+                    String[] arr = sc.nextLine().split(",");
+                    int idUser, idTour;
+                    boolean isPro;
+                    if(arr.length != paramsCount){
+                        LOG.info("Wrong count of params");
+                        continue;
+                    }
+                    for (int i = 0; i < arr.length; i++) {
+                        arr[i] = arr[i].trim();
+                    }
+                    idUser = Integer.parseInt(arr[0]);
+                    idTour = Integer.parseInt(arr[1]);
+                    switch (arr[2].toLowerCase()) {
+                        case "true":
+                            isPro = true;
+                            break;
+                        case "false":
+                            isPro = false;
+                            break;
+                        default:
+                            LOG.info("Wrong isPro status");
+                            continue;
+                    }
+                    dataJdbc.OrderTour(idUser,idTour, isPro);
+                    break;
+                }
+                break;
         }
     }
-    private static void bookHotel() {
-        DataProviderCsv data = new DataProviderCsv(ModelType.TOUR);
+    private static void bookHotel(String dsType) {
         int paramsCount;
-        while (true) {
-            LOG.info("Input comma-separated idTour, idHotel");
-            paramsCount = 2;
-            String[] arr = sc.nextLine().split(",");
-            int idHotel, idTour;
-            if(arr.length != paramsCount){
-                LOG.info("Wrong count of params");
-                continue;
-            }
-            for (int i = 0; i < arr.length; i++) {
-                arr[i] = arr[i].trim();
-            }
-            idTour = Integer.parseInt(arr[0]);
-            idHotel = Integer.parseInt(arr[1]);
-            data.bookHotel(idTour,idHotel);
-            break;
+        switch (dsType) {
+            case "csv":
+                DataProviderCsv dataCsv = new DataProviderCsv(ModelType.TOUR);
+                while (true) {
+                    LOG.info("Input comma-separated idTour, idHotel");
+                    paramsCount = 2;
+                    String[] arr = sc.nextLine().split(",");
+                    int idHotel, idTour;
+                    if(arr.length != paramsCount){
+                        LOG.info("Wrong count of params");
+                        continue;
+                    }
+                    for (int i = 0; i < arr.length; i++) {
+                        arr[i] = arr[i].trim();
+                    }
+                    idTour = Integer.parseInt(arr[0]);
+                    idHotel = Integer.parseInt(arr[1]);
+                    dataCsv.bookHotel(idTour,idHotel);
+                    break;
+                }
+                break;
+            case "xml":
+                DataProviderXml dataXml = new DataProviderXml(ModelType.TOUR);
+                while (true) {
+                    LOG.info("Input comma-separated idTour, idHotel");
+                    paramsCount = 2;
+                    String[] arr = sc.nextLine().split(",");
+                    int idHotel, idTour;
+                    if(arr.length != paramsCount){
+                        LOG.info("Wrong count of params");
+                        continue;
+                    }
+                    for (int i = 0; i < arr.length; i++) {
+                        arr[i] = arr[i].trim();
+                    }
+                    idTour = Integer.parseInt(arr[0]);
+                    idHotel = Integer.parseInt(arr[1]);
+                    dataXml.bookHotel(idTour,idHotel);
+                    break;
+                }
+                break;
+            case "jdbc":
+                DataProviderJdbc dataJdbc = new DataProviderJdbc(ModelType.TOUR);
+                while (true) {
+                    LOG.info("Input comma-separated idTour, idHotel");
+                    paramsCount = 2;
+                    String[] arr = sc.nextLine().split(",");
+                    int idHotel, idTour;
+                    if(arr.length != paramsCount){
+                        LOG.info("Wrong count of params");
+                        continue;
+                    }
+                    for (int i = 0; i < arr.length; i++) {
+                        arr[i] = arr[i].trim();
+                    }
+                    idTour = Integer.parseInt(arr[0]);
+                    idHotel = Integer.parseInt(arr[1]);
+                    dataJdbc.bookHotel(idTour,idHotel);
+                    break;
+                }
+                break;
         }
     }
     

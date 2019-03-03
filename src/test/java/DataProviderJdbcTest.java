@@ -231,5 +231,38 @@ public class DataProviderJdbcTest {
     }
 
 
+    @Test
+    public void y_a_addTour() {
+        DataProviderJdbc data = new DataProviderJdbc(ModelType.TOUR);
+        data.addTour(10000,30, "testName", "testDesc", Country.RUSSIA, "testCity");
+    }
+
+
+    @Test
+    public void y_b_orderTour() {
+        DataProviderJdbc data = new DataProviderJdbc(ModelType.ORDER);
+        data.OrderTour(1,1, false);
+//        data.OrderTour(1,1, true);
+    }
+
+    @Test
+    public void y_c_bookHotel() {
+        DataProviderJdbc data = new DataProviderJdbc(ModelType.TOUR);
+        data.bookHotel(1,2);
+    }
+
+    @Test
+    public void y_d_updateTour() {
+        DataProviderJdbc data = new DataProviderJdbc(ModelType.TOUR);
+        data.updateTour(1,10000,30, "testName", "testDesc", Country.RUSSIA, "testCity");
+    }
+
+    @Test
+    public void y_e_deleteTour() {
+        DataProviderJdbc data = new DataProviderJdbc(ModelType.TOUR);
+        data.deleteTour(1);
+    }
+
+
 }
 

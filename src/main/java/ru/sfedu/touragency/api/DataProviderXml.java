@@ -18,7 +18,9 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -54,7 +56,7 @@ public class DataProviderXml implements DataProvider {
 
     public void OrderTour(int idUser, int idTour, boolean isPro) {
         Order order = new Order();
-        long maxId = getAllIds().stream().reduce(Long::max).orElse((long) -1) + 1;
+        long maxId = getAllIds().stream().reduce(Long::max).orElse((long) 0) + 1;
         order.setId(maxId);
         order.setClientId(idUser);
         order.setTourId(idTour);
@@ -62,11 +64,21 @@ public class DataProviderXml implements DataProvider {
         order.setPro(isPro);
 
         java.util.Date date = new java.util.Date();
-        order.setDueDate(date);
+
+
+        SimpleDateFormat formater = null;
+        try {
+            formater = new SimpleDateFormat(ConfigurationUtil.getConfigurationEntry(Constants.DATE_FORMAT));
+            order.setDueDate(java.sql.Date.valueOf(LocalDate.parse(formater.format(date), DateTimeFormatter.ofPattern(ConfigurationUtil.getConfigurationEntry(Constants.DATE_FORMAT)))));
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         save(order, maxId);
-        String message = "Заказ под номером '" + maxId + "'" + " тура '" + idTour + "' оформлен на пользователя с id: " + idUser + "'";
+        String message = "Order (id='" + maxId + "')" + " of Tour (id='" + idTour + "') placed by user (id='" + idUser + "')";
         if (isPro) {
-            message += " со статусом PRO";
+            message += " with PRO status";
         }
         LOG.info(message);
     }
@@ -78,13 +90,13 @@ public class DataProviderXml implements DataProvider {
             if (tour != null) {
                 tour.setHotel(idHotel);
                 update(tour);
-                String message = "Отель с id '" + idHotel + "' забронирован на тур с id '" + idTour + "'";
+                String message = "Hotel (id='" + idHotel + "') booked on tour (id='" + idTour + "')";
                 LOG.info(message);
             } else {
-                LOG.info("Тур с id '" + idTour + "' не существует");
+                LOG.info("Tour (id='" + idTour + "') does not exist");
             }
         } else {
-            LOG.info("Неудачно");
+            LOG.info("Failed book");
         }
     }
 
@@ -100,30 +112,30 @@ public class DataProviderXml implements DataProvider {
                 tour.setCity(city);
                 tour.setPrice(price);
                 update(tour);
-                String message = "Обновлены данные тура c id '" + idTour + "' на " + tour;
+                String message = "Updated tour data (id='" + idTour + "') to " + tour;
                 LOG.info(message);
             } else {
-                LOG.info("Тур с id '" + idTour + "' не существует");
+                LOG.info("Tour (id='" + idTour + "') does not exist");
             }
         } else {
-            LOG.info("Неудачно");
+            LOG.info("Failed update");
         }
     }
 
     public void deleteTour(int idTour) {
         if (type == ModelType.TOUR) {
             delete(idTour);
-            String message = "Тур с id '" + idTour + "' удален";
+            String message = "Tour (id='" + idTour + "') deleted";
             LOG.info(message);
         } else {
-            LOG.info("Неудачно");
+            LOG.info("Failed deleted tour");
         }
     }
 
     public void addTour(int price, int dayCount, String name, String desc, Country country, String city) {
         if (type == ModelType.TOUR) {
             Tour tour = new Tour();
-            long maxId = getAllIds().stream().reduce(Long::max).orElse((long) -1) + 1;
+            long maxId = getAllIds().stream().reduce(Long::max).orElse((long) 0) + 1;
 
             tour.setId(maxId);
             tour.setHotel(0);
@@ -134,10 +146,10 @@ public class DataProviderXml implements DataProvider {
             tour.setCity(city);
             tour.setPrice(price);
             save(tour, maxId);
-            String message = "Добавлен тур '" + tour + "'";
+            String message = "Added tour '" + tour + "'";
             LOG.info(message);
         } else {
-            LOG.info("Неудачно");
+            LOG.info("Failed add tour");
         }
     }
 

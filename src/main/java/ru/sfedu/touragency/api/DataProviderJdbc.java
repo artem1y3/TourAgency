@@ -106,6 +106,107 @@ public class DataProviderJdbc implements DataProvider, Closeable {
         return String.join(",", Arrays.copyOfRange(arr,1, arr.length));
     }
 
+
+    public void OrderTour(int idUser, int idTour, boolean isPro) {
+        long maxId;
+        Order order = new Order();
+        order.setClientId(idUser);
+        order.setTourId(idTour);
+        order.setStatus(OrderStatus.SENT);
+        order.setPro(isPro);
+
+        java.util.Date date = new java.util.Date();
+
+
+        SimpleDateFormat formater = null;
+        try {
+            formater = new SimpleDateFormat(ConfigurationUtil.getConfigurationEntry(Constants.DATE_FORMAT));
+            order.setDueDate(Date.valueOf(LocalDate.parse(formater.format(date), DateTimeFormatter.ofPattern(ConfigurationUtil.getConfigurationEntry(Constants.DATE_FORMAT)))));
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        maxId = save(order);
+        String message = "Order (id='" + maxId + "')" + " of Tour (id='" + idTour + "') placed by user (id='" + idUser + "')";
+        if (isPro) {
+            message += " with PRO status";
+        }
+        LOG.info(message);
+    }
+
+
+    public void bookHotel(int idTour, int idHotel) {
+        if (type == ModelType.TOUR) {
+            Tour tour = (Tour) getById(idTour);
+//            Tour tour = (Tour) getAll().stream().filter(obj -> getId(obj) == idTour).findFirst().orElse(null);
+            if (tour != null) {
+                tour.setHotel(idHotel);
+                update(tour);
+                String message = "Hotel (id='" + idHotel + "') booked on tour (id='" + idTour + "')";
+                LOG.info(message);
+            } else {
+                LOG.info("Tour (id='" + idTour + "') does not exist");
+            }
+        } else {
+            LOG.info("Failed book");
+        }
+    }
+
+    public void updateTour(int idTour, int price, int dayCount, String name, String desc, Country country, String city) {
+        if (type == ModelType.TOUR) {
+            Tour tour = (Tour) getById(idTour);
+//            Tour tour = (Tour) getAll().stream().filter(obj -> getId(obj) == idTour).findFirst().orElse(null);
+
+            if (tour != null) {
+                tour.setName(name);
+                tour.setDescription(desc);
+                tour.setDayCount(dayCount);
+                tour.setCountry(country);
+                tour.setCity(city);
+                tour.setPrice(price);
+                update(tour);
+                String message = "Updated tour data (id='" + idTour + "') to " + tour;
+                LOG.info(message);
+            } else {
+                LOG.info("Tour (id='" + idTour + "') does not exist");
+            }
+        } else {
+            LOG.info("Failed update");
+        }
+    }
+
+    public void deleteTour(int idTour) {
+        if (type == ModelType.TOUR) {
+            delete(idTour);
+            String message = "Tour (id='" + idTour + "') deleted";
+            LOG.info(message);
+        } else {
+            LOG.info("Failed deleted tour");
+        }
+    }
+
+    public void addTour(int price, int dayCount, String name, String desc, Country country, String city) {
+        if (type == ModelType.TOUR) {
+            Tour tour = new Tour();
+//            long maxId = getAllIds().stream().reduce(Long::max).orElse((long) 0) + 1;
+            long maxId;
+            tour.setHotel(0);
+            tour.setName(name);
+            tour.setDescription(desc);
+            tour.setDayCount(dayCount);
+            tour.setCountry(country);
+            tour.setCity(city);
+            tour.setPrice(price);
+            maxId = save(tour);
+            tour.setId(maxId);
+            String message = "Added tour '" + tour + "'";
+            LOG.info(message);
+        } else {
+            LOG.info("Failed add tour");
+        }
+    }
+
     @Override
     public long save(Object model) {
         String queryTemplate = "INSERT INTO %s VALUES( DEFAULT,%s)";
