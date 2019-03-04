@@ -6,7 +6,9 @@ import ru.sfedu.touragency.api.DataProviderCsv;
 import ru.sfedu.touragency.api.DataProviderJdbc;
 import ru.sfedu.touragency.api.DataProviderXml;
 import ru.sfedu.touragency.model.*;
+import ru.sfedu.touragency.utils.ConfigurationUtil;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
@@ -296,14 +298,15 @@ public class Cli {
         }
     }
 
-    private static Order getOrder(boolean update){
+    private static Order getOrder(boolean update) throws IOException {
         while (true) {
+            String format = ConfigurationUtil.getConfigurationEntry(Constants.DATE_FORMAT);
             int paramsCount;
             if (update) {
-                LOG.info("Input comma-separated id, clientId, tourId, status (SENT or PAID), date (DD.MM.YYYY), isPro (true or false)");
+                LOG.info("Input comma-separated id, clientId, tourId, status (SENT or PAID), date (" + format + "), isPro (true or false)");
                 paramsCount = 6;
             } else {
-                LOG.info("Input comma-separated clientId, tourId, status (SENT or PAID), date (DD.MM.YYYY), isPro (true or false)");
+                LOG.info("Input comma-separated clientId, tourId, status (SENT or PAID), date (" + format + "), isPro (true or false)");
                 paramsCount = 5;
             }
             String[] arr = sc.nextLine().split(",");
