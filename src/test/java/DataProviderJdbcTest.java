@@ -5,6 +5,8 @@ import ru.sfedu.touragency.api.DataProviderJdbc;
 import ru.sfedu.touragency.model.*;
 
 
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -261,6 +263,15 @@ public class DataProviderJdbcTest {
     public void y_e_deleteTour() {
         DataProviderJdbc data = new DataProviderJdbc(ModelType.TOUR);
         data.deleteTour(1);
+    }
+
+    @Test
+    public void c_validate() throws IOException, SQLException {
+            clientDataProviderJdbc.validate();
+            proClientDataProviderJdbc.validate();
+            tourDataProviderJdbc.validate();
+            hotelDataProviderJdbc.validate();
+            orderDataProviderJdbc.validate();
     }
 
 

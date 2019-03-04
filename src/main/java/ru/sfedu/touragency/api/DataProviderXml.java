@@ -427,7 +427,7 @@ public class DataProviderXml implements DataProvider {
                         }
                     case SIMPLE_USER:
                         String email = models.get(i)[1];
-                        if(!email.matches("\\w+@\\w+(\\.\\w+)?")){
+                        if(!email.matches("\\w+@\\w+(\\.\\w+)")){
                             LOG.info("[xml_" + type.toString() + ":" + i + "]: wrong email format");
                         }
                         break;

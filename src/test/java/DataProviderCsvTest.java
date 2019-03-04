@@ -111,12 +111,12 @@ public class DataProviderCsvTest {
         hotels.forEach(item -> item.setId(hotelDataProviderCsv.save(item)));
 
 
-//        System.out.println("saveAndGetAll");
-//        clients.forEach(item -> System.out.println(item));
-//        proClients.forEach(item -> System.out.println(item));
-//        orders.forEach(item -> System.out.println(item));
-//        tours.forEach(item -> System.out.println(item));
-//        hotels.forEach(item -> System.out.println(item));
+        System.out.println("saveAndGetAll");
+        clients.forEach(item -> System.out.println(item));
+        proClients.forEach(item -> System.out.println(item));
+        orders.forEach(item -> System.out.println(item));
+        tours.forEach(item -> System.out.println(item));
+        hotels.forEach(item -> System.out.println(item));
 
         // Считываем записанные данные и смотрим contains
         clientDataProviderCsv.getAll().forEach(item -> {
@@ -210,64 +210,64 @@ public class DataProviderCsvTest {
         data.updateTour(1,10000,30, "testName", "testDesc", Country.RUSSIA, "testCity");
     }
 
-    @Test
-    public void y_e_deleteTour() {
-        DataProviderCsv data = new DataProviderCsv(ModelType.TOUR);
-        data.deleteTour(1);
-    }
-
-
-    @Test
-    public void d_delete() {
-        long testId = clients.get(1).getId();
-        clientDataProviderCsv.delete(testId);
-        proClientDataProviderCsv.delete(testId);
-        orderDataProviderCsv.delete(testId);
-        tourDataProviderCsv.delete(testId);
-        hotelDataProviderCsv.delete(testId);
-
-        //убираем удаленные строки и из изначальных листов
-        clients.remove(1);
-        proClients.remove(1);
-        orders.remove(1);
-        tours.remove(1);
-        hotels.remove(1);
-
-
-        //считываем оставшиеся данные в списки
-        List<Client> clientsCheck = new ArrayList<>();
-        List<ProClient> proClientsCheck = new ArrayList<>();
-        List<Order> ordersCheck = new ArrayList<>();
-        List<Tour> toursCheck = new ArrayList<>();
-        List<Hotel> hotelsCheck = new ArrayList<>();
-
-
-        clientDataProviderCsv.getAll().forEach(obj -> clientsCheck.add((Client) obj));
-        proClientDataProviderCsv.getAll().forEach(obj -> proClientsCheck.add((ProClient) obj));
-        orderDataProviderCsv.getAll().forEach(obj -> ordersCheck.add((Order) obj));
-        tourDataProviderCsv.getAll().forEach(obj -> toursCheck.add((Tour) obj));
-        hotelDataProviderCsv.getAll().forEach(obj -> hotelsCheck.add((Hotel) obj));
-
-
-        assertEquals(clients, clientsCheck);
-        assertEquals(proClients, proClientsCheck);
-        assertEquals(orders, ordersCheck);
-        assertEquals(tours, toursCheck);
-        assertEquals(hotels, hotelsCheck);
-    }
-
-
-
-
-
-    @Test
-    public void z_clearall() {
-        clientDataProviderCsv.getAll().forEach(obj -> clientDataProviderCsv.delete(((Client) obj).getId()));
-        proClientDataProviderCsv.getAll().forEach(obj -> proClientDataProviderCsv.delete(((ProClient) obj).getId()));
-        orderDataProviderCsv.getAll().forEach(obj -> orderDataProviderCsv.delete(((Order) obj).getId()));
-        tourDataProviderCsv.getAll().forEach(obj -> tourDataProviderCsv.delete(((Tour) obj).getId()));
-        hotelDataProviderCsv.getAll().forEach(obj -> hotelDataProviderCsv.delete(((Hotel) obj).getId()));
-    }
+//    @Test
+//    public void y_e_deleteTour() {
+//        DataProviderCsv data = new DataProviderCsv(ModelType.TOUR);
+//        data.deleteTour(1);
+//    }
+//
+//
+//    @Test
+//    public void d_delete() {
+//        long testId = clients.get(1).getId();
+//        clientDataProviderCsv.delete(testId);
+//        proClientDataProviderCsv.delete(testId);
+//        orderDataProviderCsv.delete(testId);
+//        tourDataProviderCsv.delete(testId);
+//        hotelDataProviderCsv.delete(testId);
+//
+//        //убираем удаленные строки и из изначальных листов
+//        clients.remove(1);
+//        proClients.remove(1);
+//        orders.remove(1);
+//        tours.remove(1);
+//        hotels.remove(1);
+//
+//
+//        //считываем оставшиеся данные в списки
+//        List<Client> clientsCheck = new ArrayList<>();
+//        List<ProClient> proClientsCheck = new ArrayList<>();
+//        List<Order> ordersCheck = new ArrayList<>();
+//        List<Tour> toursCheck = new ArrayList<>();
+//        List<Hotel> hotelsCheck = new ArrayList<>();
+//
+//
+//        clientDataProviderCsv.getAll().forEach(obj -> clientsCheck.add((Client) obj));
+//        proClientDataProviderCsv.getAll().forEach(obj -> proClientsCheck.add((ProClient) obj));
+//        orderDataProviderCsv.getAll().forEach(obj -> ordersCheck.add((Order) obj));
+//        tourDataProviderCsv.getAll().forEach(obj -> toursCheck.add((Tour) obj));
+//        hotelDataProviderCsv.getAll().forEach(obj -> hotelsCheck.add((Hotel) obj));
+//
+//
+//        assertEquals(clients, clientsCheck);
+//        assertEquals(proClients, proClientsCheck);
+//        assertEquals(orders, ordersCheck);
+//        assertEquals(tours, toursCheck);
+//        assertEquals(hotels, hotelsCheck);
+//    }
+//
+//
+//
+//
+//
+//    @Test
+//    public void z_clearall() {
+//        clientDataProviderCsv.getAll().forEach(obj -> clientDataProviderCsv.delete(((Client) obj).getId()));
+//        proClientDataProviderCsv.getAll().forEach(obj -> proClientDataProviderCsv.delete(((ProClient) obj).getId()));
+//        orderDataProviderCsv.getAll().forEach(obj -> orderDataProviderCsv.delete(((Order) obj).getId()));
+//        tourDataProviderCsv.getAll().forEach(obj -> tourDataProviderCsv.delete(((Tour) obj).getId()));
+//        hotelDataProviderCsv.getAll().forEach(obj -> hotelDataProviderCsv.delete(((Hotel) obj).getId()));
+//    }
 
 
 }

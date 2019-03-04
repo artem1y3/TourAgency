@@ -290,6 +290,54 @@ public class DataProviderJdbc implements DataProvider, Closeable {
         }
     }
 
+    public void validate() throws IOException, SQLException {
+        try (Statement st = connection.createStatement()) {
+            ResultSet rs;
+
+            switch (type) {
+                case ORDER:
+                    rs = st.executeQuery("SELECT * FROM orders");
+                    while (rs.next()) {
+                        if (rs.getBoolean(6)) {
+                            if (new DataProviderJdbc(ModelType.PRO_USER).getById(rs.getLong(2)) == null) {
+                                LOG.info("[csv_" + type.toString() + ":" + (rs.getLong(1)) + "]: clientId broken reference");
+                            }
+                        } else {
+                            if (new DataProviderJdbc(ModelType.SIMPLE_USER).getById(rs.getLong(2)) == null) {
+                                LOG.info("[csv_" + type.toString() + ":" + (rs.getLong(1)) + "]: clientId broken reference");
+                            }
+                        }
+                        if (new DataProviderJdbc(ModelType.TOUR).getById(rs.getLong(3)) == null) {
+                            LOG.info("[csv_" + type.toString() + ":" + (rs.getLong(1)) + "]: tourId broken reference");
+                        }
+                        if (!isOrderStatus(rs.getString(4))) {
+                            LOG.info("[csv_" + type.toString() + ":" + (rs.getLong(1)) + "]: invalid order status");
+                        }
+                    }
+                    break;
+                case TOUR:
+                    rs = st.executeQuery("SELECT * FROM tours");
+                    while (rs.next()) {
+                        if (new DataProviderJdbc(ModelType.HOTEL).getById(rs.getLong(8)) == null) {
+                            LOG.info("[csv_" + type.toString() + ":" + rs.getLong(1) + "]: hotel broken reference");
+                        }
+                    }
+                    break;
+                case SIMPLE_USER:
+                    rs = st.executeQuery("SELECT * FROM clients");
+                    while (rs.next()) {
+                        String email = rs.getString(2);
+                        if (!email.matches("\\w+@\\w+(\\.\\w+)")) {
+                            LOG.info("[csv_" + type.toString() + ":" + (rs.getLong(1)) + "]: wrong email format");
+                        }
+                    }
+                    break;
+            }
+        } catch (SQLException ex) {
+            LOG.error(ex);
+        }
+    }
+
     @Override
     public List<Object> getAll() {
         List<Object> models = new ArrayList<>();
@@ -475,6 +523,15 @@ public class DataProviderJdbc implements DataProvider, Closeable {
             connection.close();
         } catch (SQLException e) {
             LOG.error(e);
+        }
+    }
+
+    private static boolean isOrderStatus(String s) {
+        try {
+            OrderStatus.valueOf(s);
+            return true;
+        } catch (Exception e) {
+            return false;
         }
     }
 }

@@ -534,7 +534,7 @@ public class DataProviderCsv implements DataProvider {
                         }
                     case SIMPLE_USER:
                         String email = models.get(i)[1];
-                        if (!email.matches("\\w+@\\w+(\\.\\w+)?")) {
+                        if (!email.matches("\\w+@\\w+(\\.\\w+)")) {
                             LOG.info("[csv_" + type.toString() + ":" + (i + 1) + "]: wrong email format");
                             continue;
                         }

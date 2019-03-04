@@ -94,6 +94,7 @@ public class Cli {
                     break;
                 case "jdbc":
                     provider = new DataProviderJdbc(modelType);
+                    break;
             }
             switch (action) {
                 case "save":
