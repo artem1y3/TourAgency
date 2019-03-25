@@ -1,11 +1,21 @@
 package ru.sfedu.touragency.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Objects;
-
+@Entity
+@Table(name = "Hotels")
 public class Hotel {
+    @Id
+    @Column(name = "id")
     private long id;
+    @Column(name = "name", nullable = false, length = 100)
     private String name;
+    @Column(name = "description", nullable = false, length = 100)
     private String description;
+    @Column(name = "rate")
     private int rate;
 
     public long getId() {
