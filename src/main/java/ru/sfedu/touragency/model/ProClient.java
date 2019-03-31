@@ -1,9 +1,11 @@
 package ru.sfedu.touragency.model;
 
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import java.util.Objects;
 
 @Entity(name = "ProClient")
+@DiscriminatorValue( "pro" )
 public class ProClient extends Client {
     private int discount;
     private int points;
