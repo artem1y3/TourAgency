@@ -1,10 +1,10 @@
 package ru.sfedu.touragency.model;
 
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
 import java.util.Objects;
 
-@MappedSuperclass
+@Entity(name = "Client")
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class Client {
     @Id
     protected long id;
