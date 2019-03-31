@@ -1,13 +1,29 @@
 package ru.sfedu.touragency.model;
 
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
 import java.util.Objects;
 
+@MappedSuperclass
 public class Client {
+    @Id
     protected long id;
     protected String email;
     protected String password;
     protected String firstName;
     protected String lastName;
+
+    public Client () {
+
+    }
+
+    public Client (long id, String email, String password, String firstName, String lastName) {
+        this.id = id;
+        this.email = email;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
 
     public long getId() {
         return id;

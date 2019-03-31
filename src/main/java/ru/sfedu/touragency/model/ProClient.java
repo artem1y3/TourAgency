@@ -1,10 +1,22 @@
 package ru.sfedu.touragency.model;
 
+import javax.persistence.Entity;
 import java.util.Objects;
 
+@Entity(name = "ProClient")
 public class ProClient extends Client {
     private int discount;
     private int points;
+
+    public ProClient () {
+
+    }
+
+    public ProClient (long id, String email, String password, String firstName, String lastName, int discount, int points) {
+        super (id, email, password, firstName, lastName);
+        this.discount = discount;
+        this.points = points;
+    }
 
     public int getDiscount() {
         return discount;

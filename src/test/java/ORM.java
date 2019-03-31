@@ -9,6 +9,7 @@ import org.hibernate.SessionFactory;
 import org.junit.Test;
 import ru.sfedu.touragency.api.HibernateUtil;
 import ru.sfedu.touragency.model.Hotel;
+import ru.sfedu.touragency.model.ProClient;
 import ru.sfedu.touragency.model.TestBean;
 import ru.sfedu.touragency.model.TestClientBean;
 
@@ -93,6 +94,18 @@ public class ORM {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
         session.save(testBean);
+        session.getTransaction().commit();
+        session.close();
+    }
+
+    @Test
+    public void testInheritance() {
+        ProClient proClient = new ProClient(1, "asdf", "asdf", "asdf", "asdf", 123, 345);
+
+        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        session.save(proClient);
         session.getTransaction().commit();
         session.close();
     }
