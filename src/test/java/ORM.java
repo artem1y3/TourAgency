@@ -1,6 +1,8 @@
 //package ru.sfedu.touragency.model.;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -8,7 +10,7 @@ import org.junit.Test;
 import ru.sfedu.touragency.api.HibernateUtil;
 import ru.sfedu.touragency.model.Hotel;
 import ru.sfedu.touragency.model.TestBean;
-import ru.sfedu.touragency.model.Address;
+import ru.sfedu.touragency.model.TestClientBean;
 
 //import ru.sfedu.touragency.beans.Entity;
 //import ru.sfedu.touragency.beans.UserModel;
@@ -78,17 +80,14 @@ public class ORM {
     }
     @Test
     public void qwe(){
-        TestBean testBean = new TestBean();
-        testBean.setId(1);
-        testBean.setLastName("asd");
-        testBean.setBirthData(new Date());
+        TestBean testBean = new TestBean(1, "name", "description", new Date());
 
-        Address adress = new Address();
-        adress.setStreet("adfs");
-        adress.setZipcode("asdf");
-        adress.setCity("asdf");
+        List<TestClientBean> clients = new ArrayList<>();
+        clients.add(new TestClientBean("lastName1", new Date()));
+        clients.add(new TestClientBean("lastName2", new Date()));
+        clients.add(new TestClientBean("lastName3", new Date()));
 
-        testBean.setHomeAdress(adress);
+        testBean.setClients(clients);
 
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
         Session session = sessionFactory.openSession();

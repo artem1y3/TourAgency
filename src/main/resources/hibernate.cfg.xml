@@ -20,5 +20,8 @@
         <!-- Вывод в консоль SQL-запросов -->
         <property name="show_sql">true</property>
         <mapping class="ru.sfedu.touragency.model.Hotel"/>
+        <mapping class="ru.sfedu.touragency.model.TestBean"/>
+        <mapping class="ru.sfedu.touragency.model.TestClientBean"/>
+        <!--<mapping class="ru.sfedu.touragency.model.Hotel"/>-->
     </session-factory>
 </hibernate-configuration>

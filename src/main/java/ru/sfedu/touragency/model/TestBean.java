@@ -1,27 +1,48 @@
 package ru.sfedu.touragency.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
-import java.util.Objects;
-import ru.sfedu.touragency.model.Address;
-
-
-
+import java.util.List;
 
 
 @Entity
-@Table(name = "Testbean")
-public class TestBean {
+@Table(name = "TestBean")
+public class TestBean implements Serializable {
     @Id
     @Column(name = "id")
     private long id;
-    @Column(name = "last_name", nullable = false, length = 100)
-    private String lastName;
-    @Column(name = "birth_date", nullable = false)
-    private Date birthData;
+    @Column(name = "name", nullable = false, length = 100)
+    private String name;
+    @Column(name = "description", nullable = false, length = 100)
+    private String description;
+    @Column(name = "date_created")
+    private Date dateCreated;
+//    @Column(name = "check")
+//    private boolean check;
 
-    @Embedded
-    private Address homeAdress;
+//    @Embedded
+    @ElementCollection
+    private List<TestClientBean> clients;
+
+    public TestBean(int id, String name, String description, Date dateCreated) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.dateCreated = dateCreated;
+//        this.check = check;
+    }
+
+    public TestBean() {
+    }
+
+    public List<TestClientBean> getClients() {
+        return clients;
+    }
+
+    public void setClients(List<TestClientBean> clients) {
+        this.clients = clients;
+    }
 
     public long getId() {
         return id;
@@ -31,27 +52,35 @@ public class TestBean {
         this.id = id;
     }
 
-    public String getLastName() {
-        return lastName;
+    public String getName() {
+        return name;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public Date getBirthData() {
-        return birthData;
+    public String getDescription() {
+        return description;
     }
 
-    public void setBirthData(Date birthData) {
-        this.birthData = birthData;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public Address getHomeAdress() {
-        return homeAdress;
+    public Date getDateCreated() {
+        return dateCreated;
     }
 
-    public void setHomeAdress(Address homeAdress) {
-        this.homeAdress = homeAdress;
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
     }
+
+//    public boolean isCheck() {
+//        return check;
+//    }
+//
+//    public void setCheck(boolean check) {
+//        this.check = check;
+//    }
 }
