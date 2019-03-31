@@ -1,14 +1,14 @@
 //package ru.sfedu.touragency.model.;
 
-import java.io.File;
+import java.util.Date;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import ru.sfedu.touragency.api.HibernateUtil;
 import ru.sfedu.touragency.model.Hotel;
+import ru.sfedu.touragency.model.TestBean;
+import ru.sfedu.touragency.model.Address;
 
 //import ru.sfedu.touragency.beans.Entity;
 //import ru.sfedu.touragency.beans.UserModel;
@@ -28,6 +28,7 @@ public class ORM {
         session.beginTransaction();
         session.save(hotel);
         session.getTransaction().commit();
+        session.close();
     }
     @Test
     public void saveOrUpdateHotel(){
@@ -41,6 +42,7 @@ public class ORM {
         session.beginTransaction();
         session.saveOrUpdate(hotel);
         session.getTransaction().commit();
+        session.close();
     }
     @Test
     public void getHotel(){
@@ -50,6 +52,7 @@ public class ORM {
         Hotel hotel = session.get(Hotel.class, (long)1);
         session.getTransaction().commit();
         System.out.println(hotel);
+        session.close();
     }
 //    фамилия, дата рождения, пол
     @Test
@@ -59,6 +62,7 @@ public class ORM {
         session.beginTransaction();
         session.delete(session.get(Hotel.class, (long)1));
         session.getTransaction().commit();
+        session.close();
     }
     @Test
     public void asd(){
@@ -70,5 +74,27 @@ public class ORM {
                 .forEach(System.out::println);
 //        session.delete(session.get(Hotel.class, (long)1));
         session.getTransaction().commit();
+        session.close();
+    }
+    @Test
+    public void qwe(){
+        TestBean testBean = new TestBean();
+        testBean.setId(1);
+        testBean.setLastName("asd");
+        testBean.setBirthData(new Date());
+
+        Address adress = new Address();
+        adress.setStreet("adfs");
+        adress.setZipcode("asdf");
+        adress.setCity("asdf");
+
+        testBean.setHomeAdress(adress);
+
+        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        session.save(testBean);
+        session.getTransaction().commit();
+        session.close();
     }
 }

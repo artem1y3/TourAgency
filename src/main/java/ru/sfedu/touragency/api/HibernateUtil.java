@@ -5,6 +5,7 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 import ru.sfedu.touragency.model.Hotel;
+import ru.sfedu.touragency.model.TestBean;
 
 public class HibernateUtil {
     private static SessionFactory sessionFactory;
@@ -23,6 +24,7 @@ public class HibernateUtil {
             MetadataSources metadataSources =
                     new MetadataSources(serviceRegistry);
             metadataSources.addAnnotatedClass(Hotel.class);// Аннотированная сущность
+            metadataSources.addAnnotatedClass(TestBean.class);// Аннотированная сущность
             metadataSources.addResource("named-queries_hbm.xml");// Именованные запросы
             sessionFactory = metadataSources.buildMetadata().buildSessionFactory();
         }
